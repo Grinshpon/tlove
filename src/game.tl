@@ -1,3 +1,4 @@
+local Stack = require "stack"
 local config = require "config"
 local sk = require "sidekick"
 local map = require "map"
@@ -61,11 +62,18 @@ function game.load()
   initInputCallbacks()
 end
 
+
 function game.update(dt: number)
 end
 
 function game.drawWorld()
   love.graphics.print("Hello world",50,50)
+  --local s = Stack.init(1);
+  --local s1 = Stack.new() as Stack<number>;
+  --s:push(2)
+  --s1:push(30)
+  --love.graphics.print(tostring(s:pop()), 100,100)
+  --love.graphics.print(tostring(s1:pop()), 110,110)
 end
 
 function game.drawUI()

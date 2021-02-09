@@ -1,3 +1,4 @@
+local Stack = require("stack")
 local config = require("config")
 local sk = require("sidekick")
 local map = require("map")
@@ -61,11 +62,18 @@ function game.load()
    initInputCallbacks()
 end
 
+
 function game.update(dt)
 end
 
 function game.drawWorld()
    love.graphics.print("Hello world", 50, 50)
+
+
+
+
+
+
 end
 
 function game.drawUI()
