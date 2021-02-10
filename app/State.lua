@@ -1,6 +1,6 @@
 local Stack = require("Stack")
 
-local GameObject = {}
+local GameObject = require("gameobject").GameObject
 
 local Mod = {SResult = {}, State = {}, StateStack = {}, }
 

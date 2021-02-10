@@ -1,6 +1,6 @@
 local Stack = require "Stack"
 
-local type GameObject = record end --temporary
+local GameObject = require("gameobject").GameObject
 
 local type Mod = record
   type SResultTy = enum
