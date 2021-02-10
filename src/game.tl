@@ -1,7 +1,6 @@
 local Stack = require "stack"
 local config = require "config"
 local sk = require "sidekick"
-local map = require "map"
 local input = require "input"
 
 local record Game

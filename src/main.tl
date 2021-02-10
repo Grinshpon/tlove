@@ -1,11 +1,11 @@
 local config = require "config"
-require "camera"
 local sk = require "sidekick"
 local game = require "game"
 
 local function noop() end
 
 function love.load()
+  print("Starting game")
   if not game.load then game.load = noop end
   if not game.update then game.update = noop end
   if not game.drawWorld then game.drawWorld = noop end
