@@ -1,11 +1,12 @@
-require "camera"
 local config = require "config"
 local input = require "input"
+local state = require "state"
 
 local sk = {
-  camera: Camera = {},
+  camera: Camera = nil,
   coroutines: {thread} = {},
   coCount = 0,
+  stateStack: state.StateStack = nil,
 }
 
 -- Coroutine Handler --
@@ -54,6 +55,12 @@ end
 
 -- Camera and Transform --
 
+global record Camera
+  x: number
+  y: number
+  scale: number
+end
+
 global enum TransformType
   "world"
   "ui"
@@ -78,6 +85,12 @@ function sk.setTransform(ttype: TransformType)
     love.graphics.scale(love.graphics.getHeight()/config.height) -- scales with height only
   end
 end
+
+-- State Stack --
+
+function sk.initStateStack()
+  sk.stateStack = state.initStateStack()
+ end
 
 
 return sk

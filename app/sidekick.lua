@@ -1,11 +1,12 @@
-require("camera")
 local config = require("config")
 local input = require("input")
+local state = require("state")
 
 local sk = {
-   camera = {},
+   camera = nil,
    coroutines = {},
    coCount = 0,
+   stateStack = nil,
 }
 
 
@@ -54,6 +55,12 @@ end
 
 
 
+ Camera = {}
+
+
+
+
+
  TransformType = {}
 
 
@@ -77,6 +84,12 @@ function sk.setTransform(ttype)
    elseif ttype == "ui" then
       love.graphics.scale(love.graphics.getHeight() / config.height)
    end
+end
+
+
+
+function sk.initStateStack()
+   sk.stateStack = state.initStateStack()
 end
 
 
