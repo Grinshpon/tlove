@@ -93,4 +93,28 @@ function sk.initStateStack()
 end
 
 
+
+function sk.load()
+   sk.initStateStack()
+   sk.initCamera()
+end
+
+function sk.update(dt)
+   sk.updateInput()
+   sk.updateCoroutines()
+   sk.stateStack:update(dt)
+end
+
+function sk.drawWorld()
+   sk.stateStack:drawWorld()
+end
+
+function sk.drawUI()
+   sk.stateStack:drawUI()
+end
+
+function sk.drawRaw()
+   sk.stateStack:drawRaw()
+end
+
 return sk
