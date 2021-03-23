@@ -6,7 +6,7 @@ local Mod = {Vector3 = {}, }
 local Vector3 = Mod.Vector3
 
 function Vec3IX(t, key)
-   if type(key) == "number" then
+   if math.type(key) == "integer" then
       return rawget(t, key)
    else
       if key == "x" then return rawget(t, 1)

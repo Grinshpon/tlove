@@ -1,6 +1,6 @@
 local type Stack = record<T>
   data: {T}
-  len: number
+  len: integer
 end
 
 function Stack:push<T>(item: T)
@@ -13,6 +13,13 @@ function Stack:pop<T>(): T -- | nil
     self.len = self.len-1
     table.remove(self.data)
     return item
+  else
+    return nil
+  end
+end
+function Stack:peek<T>(): T
+  if self.len > 0 then
+    return self.data[self.len]
   else
     return nil
   end

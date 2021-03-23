@@ -17,6 +17,13 @@ function Stack:pop()
       return nil
    end
 end
+function Stack:peek()
+   if self.len > 0 then
+      return self.data[self.len]
+   else
+      return nil
+   end
+end
 
 function Stack.init(item)
    local s = {}

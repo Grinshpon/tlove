@@ -1,20 +1,16 @@
--- deprecated
-
---[[
-local Stack = require "stack"
 local config = require "config"
 local sk = require "sidekick"
 local input = require "input"
+local state = require "state"
 
-local record Game
-  load: function()
-  update: function(dt: number)
-  drawWorld: function()
-  drawUI: function()
-  drawRaw: function() -- raw
-end
+local Stack = require "stack"
+local SResult = state.SResult
 
-local game: Game = {}
+-- initial state
+local init: state.State = {
+  gameObjects = {},
+  gameObjectIndex = {},
+}
 
 local function initCursor()
   --self.cursor = love.graphics.newImage("assets/cursor.png") as love.graphics.Drawable
@@ -60,15 +56,17 @@ local function initInputCallbacks()
   input.enable(camActions)
 end
 
-function game.load()
+function init:load(): SResult
   initInputCallbacks()
+  return state.cont()
 end
 
 
-function game.update(dt: number)
+function init:update(dt: number): SResult
+  return state.cont()
 end
 
-function game.drawWorld()
+function init:drawWorld()
   love.graphics.print("Hello world",50,50)
   --local s = Stack.init(1);
   --local s1 = Stack.new() as Stack<number>;
@@ -78,11 +76,10 @@ function game.drawWorld()
   --love.graphics.print(tostring(s1:pop()), 110,110)
 end
 
-function game.drawUI()
+function init:drawUI()
 end
 
-function game.drawRaw()
+function init:drawRaw()
 end
 
-return game
---]]
+return init

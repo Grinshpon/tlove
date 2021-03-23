@@ -2,7 +2,39 @@ local config = require "config"
 local input = require "input"
 local state = require "state"
 
-local sk = {
+global record Camera
+  x: number
+  y: number
+  scale: number
+end
+
+global enum TransformType
+  "world"
+  "ui"
+  "window"
+end
+
+local record Sidekick
+  camera: Camera
+  coroutines: {thread}
+  coCount: integer
+  stateStack: state.StateStack
+  startCoroutine: function(f: AnyFn, ...: any): thread
+  stopCoroutine: function(cox: thread)
+  updateCoroutines: function()
+  updateInput: function()
+  initCamera: function()
+  setTransform: function(ttype: TransformType)
+  initStateStack: function()
+  load: function()
+  update: function(dt: number)
+  drawWorld: function()
+  drawUI: function()
+  drawRaw: function()
+end
+
+local sk: Sidekick = {
+--local sk = {
   camera: Camera = nil,
   coroutines: {thread} = {},
   coCount = 0,
@@ -55,18 +87,6 @@ end
 
 -- Camera and Transform --
 
-global record Camera
-  x: number
-  y: number
-  scale: number
-end
-
-global enum TransformType
-  "world"
-  "ui"
-  "window"
-end
-
 function sk.initCamera()
   sk.camera = {
     x = 0,
@@ -90,7 +110,7 @@ end
 
 function sk.initStateStack()
   sk.stateStack = state.initStateStack()
- end
+end
 
 -- Load, Update, Draw --
 

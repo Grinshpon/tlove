@@ -1,8 +1,6 @@
 return {
   skip_compat53 = true,
-  preload_modules = {
-    "love",
-  },
+  global_env_def = "love",
   source_dir = "src",
   include_dir = {
     "src",

@@ -5,8 +5,8 @@ local record Mod
 end
 local Vector3 = Mod.Vector3
 
-function Vec3IX(t: Vector3, key: number | string): number
-  if key is number then
+function Vec3IX(t: Vector3, key: integer | string): number
+  if key is integer then
     return rawget(t,key)
   else
     if key == "x" then return rawget(t,1)

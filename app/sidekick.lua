@@ -2,7 +2,39 @@ local config = require("config")
 local input = require("input")
 local state = require("state")
 
+ Camera = {}
+
+
+
+
+
+ TransformType = {}
+
+
+
+
+
+local Sidekick = {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 local sk = {
+
    camera = nil,
    coroutines = {},
    coCount = 0,
@@ -52,18 +84,6 @@ end
 function sk.updateInput()
    input.update()
 end
-
-
-
- Camera = {}
-
-
-
-
-
- TransformType = {}
-
-
 
 
 
