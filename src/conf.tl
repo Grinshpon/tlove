@@ -1,4 +1,5 @@
 function love.conf(t: love.Configuration)
+  t.console = true
   t.window.usedpiscale = false
   t.window.title = "Stellar Sea" -- or "Exa Explorum"
   t.window.width = 1920

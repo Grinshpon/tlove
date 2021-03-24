@@ -11,15 +11,15 @@ local record Input
     isDown: boolean
   end
 
-  record InputActions
+  record ActionMap
     actions: {string:KeyAction}
     enabled: boolean
   end
   keyAction: function(love.keyboard.KeyConstant): KeyAction
-  addInputActions: function(InputActions)
+  addActionMap: function(ActionMap)
   update: function()
-  enable: function(InputActions)
-  disable: function(InputActions)
+  enable: function(ActionMap)
+  disable: function(ActionMap)
 
 
   record Mouse
@@ -32,7 +32,7 @@ local record Input
   mouse: Mouse
 end
 local KeyAction = Input.KeyAction
-local InputActions = Input.InputActions
+local ActionMap = Input.ActionMap
 local Mouse = Input.Mouse
 --function KeyAction.new(o: KeyAction): KeyAction
   --return setmetatable(o,{__index=KeyAction})
@@ -45,12 +45,12 @@ local Mouse = Input.Mouse
   --return self
 --end
 
---global record InputActions
+--global record ActionMap
   --actions: {string:KeyAction}
   --enabled: boolean
 --end
 
-local function updateInputActions(ia: InputActions)
+local function updateActionMap(ia: ActionMap)
   for _,action in pairs(ia.actions) do
     if action.isDown then
       action.down()
@@ -58,9 +58,9 @@ local function updateInputActions(ia: InputActions)
   end
 end
 
---function InputActions.new(o: InputActions): InputActions
-   --return setmetatable(o, { __index = InputActions })
-   --local self: InputActions = setmetatable({}, { __index = InputActions })
+--function ActionMap.new(o: ActionMap): ActionMap
+   --return setmetatable(o, { __index = ActionMap })
+   --local self: ActionMap = setmetatable({}, { __index = ActionMap })
    --self.actions = o.actions
    --self.enabled = o.enabled or false
    --return self
@@ -68,7 +68,7 @@ end
 
 -- module
 
-local inputActionsList: {InputActions} = {}
+local inputActionsList: {ActionMap} = {}
 
 local input: Input = {}
 
@@ -90,7 +90,7 @@ function input.keyAction(k: love.keyboard.KeyConstant): KeyAction
   return ka
 end
 
-function input.addInputActions(ia: InputActions)
+function input.addActionMap(ia: ActionMap)
   table.insert(inputActionsList,ia)
 end
 
@@ -99,15 +99,15 @@ function input.update()
   input.mouse.dx, input.mouse.dy = mx-input.mouse.x, my-input.mouse.y
   input.mouse.x,input.mouse.y = mx,my
   for _,ia in ipairs(inputActionsList) do
-    if ia.enabled then updateInputActions(ia) end
+    if ia.enabled then updateActionMap(ia) end
   end
 end
 
-function input.enable(ia: InputActions)
+function input.enable(ia: ActionMap)
   ia.enabled = true
 end
 
-function input.disable(ia: InputActions)
+function input.disable(ia: ActionMap)
   ia.enabled = false
 end
 

@@ -2,8 +2,8 @@ local config = require("config")
 local sk = require("sidekick")
 
 
-local function noop() end
-local function noop1(dt) end
+
+
 
 function love.load()
    print("Starting game")

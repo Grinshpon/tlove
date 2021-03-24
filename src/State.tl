@@ -19,6 +19,7 @@ local type Mod = record
     load: function(self: State, prev: State): SResult --on first time load, called once
     awake: function(self: State, prev: State): SResult --called whenver state becomes active
     update: function(self: State, dt: number): SResult
+    supdate: function(self: State, dt: number): SResult --shadow update, called when state is not on top. push and pop result not allowed
     drawWorld: function(self: State)
     drawUI: function(self: State)
     drawRaw: function(self: State)
@@ -46,6 +47,24 @@ function Mod.cont(): SResult
     onPush = nil,
   }
 end
+function Mod.push(s: State): SResult
+  return {
+    type = "Push",
+    onPush = s,
+  }
+end
+function Mod.pop(): SResult
+  return {
+    type = "Pop",
+    onPush = nil,
+  }
+end
+function Mod.exit(): SResult
+  return {
+    type = "Exit",
+    onPush = nil,
+  }
+end
 
 function StateStack:handleResult(res: SResult)
   if res.type == "Push" then
@@ -66,10 +85,17 @@ function StateStack:load(initState: State)
 end
 
 function StateStack:update(dt: number)
-  local state = self.stack:peek()
-  if (not state) then return end
-  local res = state:update(dt)
-  self:handleResult(res)
+  --local state = self.stack:peek()
+  --if (not state) then return end
+  for i,state in ipairs(self.stack.data) do
+    local res: SResult = nil
+    if i == 1 then
+      if state.update then res = state:update(dt) end
+    else
+      if state.supdate then res = state:supdate(dt) end
+    end
+    if res then self:handleResult(res) end
+  end
 end
 
 function StateStack:drawWorld()

@@ -63,6 +63,7 @@ end
 
 
 function init:update(dt)
+   print(dt)
    return state.cont()
 end
 

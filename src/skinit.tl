@@ -16,7 +16,7 @@ local function initCursor()
   --self.cursor = love.graphics.newImage("assets/cursor.png") as love.graphics.Drawable
 end
 
-local camActions: input.InputActions = {
+local camActions: input.ActionMap = {
   actions = {
     zoomIn   = input.keyAction("="),
     zoomOut  = input.keyAction("-"),
@@ -52,7 +52,7 @@ local function initInputCallbacks()
     sk.camera.y = sk.camera.y + config.panSpeed*love.timer.getDelta()
   end
 
-  input.addInputActions(camActions)
+  input.addActionMap(camActions)
   input.enable(camActions)
 end
 

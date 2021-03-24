@@ -27,6 +27,7 @@ local Mod = {SResult = {}, State = {}, StateStack = {}, }
 
 
 
+
 local SResultTy = Mod.SResultTy
 local SResult = Mod.SResult
 local State = Mod.State
@@ -43,6 +44,24 @@ end
 function Mod.cont()
    return {
       type = "Cont",
+      onPush = nil,
+   }
+end
+function Mod.push(s)
+   return {
+      type = "Push",
+      onPush = s,
+   }
+end
+function Mod.pop()
+   return {
+      type = "Pop",
+      onPush = nil,
+   }
+end
+function Mod.exit()
+   return {
+      type = "Exit",
       onPush = nil,
    }
 end
@@ -66,10 +85,17 @@ function StateStack:load(initState)
 end
 
 function StateStack:update(dt)
-   local state = self.stack:peek()
-   if (not state) then return end
-   local res = state:update(dt)
-   self:handleResult(res)
+
+
+   for i, state in ipairs(self.stack.data) do
+      local res = nil
+      if i == 1 then
+         if state.update then res = state:update(dt) end
+      else
+         if state.supdate then res = state:supdate(dt) end
+      end
+      if res then self:handleResult(res) end
+   end
 end
 
 function StateStack:drawWorld()
