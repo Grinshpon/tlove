@@ -2,7 +2,7 @@ function noop() end
 
 
 
-local Input = {KeyAction = {}, InputActions = {}, Mouse = {}, }
+local Input = {KeyAction = {}, ActionMap = {}, Mouse = {}, }
 
 
 
@@ -32,7 +32,7 @@ local Input = {KeyAction = {}, InputActions = {}, Mouse = {}, }
 
 
 local KeyAction = Input.KeyAction
-local InputActions = Input.InputActions
+local ActionMap = Input.ActionMap
 local Mouse = Input.Mouse
 
 
@@ -50,7 +50,7 @@ local Mouse = Input.Mouse
 
 
 
-local function updateInputActions(ia)
+local function updateActionMap(ia)
    for _, action in pairs(ia.actions) do
       if action.isDown then
          action.down()
@@ -90,7 +90,7 @@ function input.keyAction(k)
    return ka
 end
 
-function input.addInputActions(ia)
+function input.addActionMap(ia)
    table.insert(inputActionsList, ia)
 end
 
@@ -99,7 +99,7 @@ function input.update()
    input.mouse.dx, input.mouse.dy = mx - input.mouse.x, my - input.mouse.y
    input.mouse.x, input.mouse.y = mx, my
    for _, ia in ipairs(inputActionsList) do
-      if ia.enabled then updateInputActions(ia) end
+      if ia.enabled then updateActionMap(ia) end
    end
 end
 

@@ -1,6 +1,6 @@
 local config = require("config")
 local input = require("input")
-local state = require("state")
+local scene = require("scene")
 
  Camera = {}
 
@@ -38,7 +38,7 @@ local sk = {
    camera = nil,
    coroutines = {},
    coCount = 0,
-   stateStack = nil,
+   sceneStack = nil,
 }
 
 
@@ -108,33 +108,33 @@ end
 
 
 
-function sk.initStateStack()
-   sk.stateStack = state.initStateStack()
+function sk.initSceneStack()
+   sk.sceneStack = scene.initSceneStack()
 end
 
 
 
 function sk.load()
-   sk.initStateStack()
+   sk.initSceneStack()
    sk.initCamera()
 end
 
 function sk.update(dt)
    sk.updateInput()
    sk.updateCoroutines()
-   sk.stateStack:update(dt)
+   sk.sceneStack:update(dt)
 end
 
 function sk.drawWorld()
-   sk.stateStack:drawWorld()
+   sk.sceneStack:drawWorld()
 end
 
 function sk.drawUI()
-   sk.stateStack:drawUI()
+   sk.sceneStack:drawUI()
 end
 
 function sk.drawRaw()
-   sk.stateStack:drawRaw()
+   sk.sceneStack:drawRaw()
 end
 
 return sk

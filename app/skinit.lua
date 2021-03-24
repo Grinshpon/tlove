@@ -1,16 +1,13 @@
 local config = require("config")
 local sk = require("sidekick")
 local input = require("input")
-local state = require("state")
+local scene = require("scene")
 
 local Stack = require("stack")
-local SResult = state.SResult
+local SResult = scene.SResult
 
 
-local init = {
-   gameObjects = {},
-   gameObjectIndex = {},
-}
+local init = scene.Scene.new();
 
 local function initCursor()
 
@@ -52,19 +49,18 @@ local function initInputCallbacks()
       sk.camera.y = sk.camera.y + config.panSpeed * love.timer.getDelta()
    end
 
-   input.addInputActions(camActions)
+   input.addActionMap(camActions)
    input.enable(camActions)
 end
 
 function init:load()
    initInputCallbacks()
-   return state.cont()
+   return scene.cont()
 end
 
 
 function init:update(dt)
-   print(dt)
-   return state.cont()
+   return scene.cont()
 end
 
 function init:drawWorld()

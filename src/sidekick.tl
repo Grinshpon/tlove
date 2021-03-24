@@ -1,6 +1,6 @@
 local config = require "config"
 local input = require "input"
-local state = require "state"
+local scene = require "scene"
 
 global record Camera
   x: number
@@ -18,14 +18,14 @@ local record Sidekick
   camera: Camera
   coroutines: {thread}
   coCount: integer
-  stateStack: state.StateStack
+  sceneStack: scene.SceneStack
   startCoroutine: function(f: AnyFn, ...: any): thread
   stopCoroutine: function(cox: thread)
   updateCoroutines: function()
   updateInput: function()
   initCamera: function()
   setTransform: function(ttype: TransformType)
-  initStateStack: function()
+  initSceneStack: function()
   load: function()
   update: function(dt: number)
   drawWorld: function()
@@ -38,7 +38,7 @@ local sk: Sidekick = {
   camera: Camera = nil,
   coroutines: {thread} = {},
   coCount = 0,
-  stateStack: state.StateStack = nil,
+  sceneStack: scene.SceneStack = nil,
 }
 
 -- Coroutine Handler --
@@ -106,35 +106,35 @@ function sk.setTransform(ttype: TransformType)
   end
 end
 
--- State Stack --
+-- Scene Stack --
 
-function sk.initStateStack()
-  sk.stateStack = state.initStateStack()
+function sk.initSceneStack()
+  sk.sceneStack = scene.initSceneStack()
 end
 
 -- Load, Update, Draw --
 
 function sk.load()
-  sk.initStateStack()
+  sk.initSceneStack()
   sk.initCamera()
 end
 
 function sk.update(dt: number)
   sk.updateInput()
   sk.updateCoroutines()
-  sk.stateStack:update(dt)
+  sk.sceneStack:update(dt)
 end
 
 function sk.drawWorld()
-  sk.stateStack:drawWorld()
+  sk.sceneStack:drawWorld()
 end
 
 function sk.drawUI()
-  sk.stateStack:drawUI()
+  sk.sceneStack:drawUI()
 end
 
 function sk.drawRaw()
-  sk.stateStack:drawRaw()
+  sk.sceneStack:drawRaw()
 end
 
 return sk

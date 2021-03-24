@@ -1,16 +1,13 @@
 local config = require "config"
 local sk = require "sidekick"
 local input = require "input"
-local state = require "state"
+local scene = require "scene"
 
 local Stack = require "stack"
-local SResult = state.SResult
+local SResult = scene.SResult
 
--- initial state
-local init: state.State = {
-  gameObjects = {},
-  gameObjectIndex = {},
-}
+-- initial scene
+local init = scene.Scene.new();
 
 local function initCursor()
   --self.cursor = love.graphics.newImage("assets/cursor.png") as love.graphics.Drawable
@@ -58,12 +55,12 @@ end
 
 function init:load(): SResult
   initInputCallbacks()
-  return state.cont()
+  return scene.cont()
 end
 
 
 function init:update(dt: number): SResult
-  return state.cont()
+  return scene.cont()
 end
 
 function init:drawWorld()
