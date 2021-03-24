@@ -1,8 +1,10 @@
 local config = require("framework/config")
-local gameObject = require("framework/gameObject")
+local gameObject = require("framework/gameobject")
 local input = require("framework/input")
 local scene = require("framework/scene")
 local Stack = require("framework/stack")
+
+local sprite = require("framework/components/sprite")
 
  Camera = {}
 
@@ -45,6 +47,8 @@ local sk = {
    input = input,
    scene = scene,
    Stack = Stack,
+
+   sprite = sprite,
 
    camera = nil,
    coroutines = {},

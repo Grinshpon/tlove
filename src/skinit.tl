@@ -55,6 +55,11 @@ end
 
 function init:load(): SResult
   initInputCallbacks()
+
+  local g = sk.gameObject.GameObject.new("test")
+  local c = sk.sprite.newSprite("assets/ship1.png")
+  g:addComponent(c)
+  self:addGameObject(g)
   return scene.cont
 end
 
@@ -64,7 +69,7 @@ function init:update(dt: number): SResult
 end
 
 function init:drawWorld()
-  love.graphics.print("Hello world",50,50)
+  love.graphics.print("Hello world",0,50)
   --local s = Stack.init(1);
   --local s1 = Stack.new() as Stack<number>;
   --s:push(2)

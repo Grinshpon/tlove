@@ -75,8 +75,13 @@ function SceneStack:update(dt)
       local res = nil
       if i == 1 then
          if scene.update then
-            res = scene:update(dt)
+            for _, g in ipairs(scene.gameObjects) do
+               for _, c in ipairs(g.components) do
+                  if c.update then c:update(dt) end
+               end
+            end
             table.sort(scene.gameObjects, gameObject.zCmp)
+            res = scene:update(dt)
          end
       else
          if scene.supdate then res = scene:supdate(dt) end
@@ -88,18 +93,33 @@ end
 function SceneStack:drawWorld()
    local scene = self.stack:peek()
    if (not scene) then return end
+   for _, g in ipairs(scene.gameObjects) do
+      for _, c in ipairs(g.components) do
+         if c.drawWorld then c:drawWorld() end
+      end
+   end
    scene:drawWorld()
 end
 
 function SceneStack:drawUI()
    local scene = self.stack:peek()
    if (not scene) then return end
+   for _, g in ipairs(scene.gameObjects) do
+      for _, c in ipairs(g.components) do
+         if c.drawUI then c:drawUI() end
+      end
+   end
    scene:drawUI()
 end
 
 function SceneStack:drawRaw()
    local scene = self.stack:peek()
    if (not scene) then return end
+   for _, g in ipairs(scene.gameObjects) do
+      for _, c in ipairs(g.components) do
+         if c.drawRaw then c:drawRaw() end
+      end
+   end
    scene:drawRaw()
 end
 
