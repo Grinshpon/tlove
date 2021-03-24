@@ -55,12 +55,12 @@ end
 
 function init:load()
    initInputCallbacks()
-   return scene.cont()
+   return scene.cont
 end
 
 
 function init:update(dt)
-   return scene.cont()
+   return scene.cont
 end
 
 function init:drawWorld()

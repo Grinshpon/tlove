@@ -19,6 +19,7 @@ local record Sidekick
   coroutines: {thread}
   coCount: integer
   sceneStack: scene.SceneStack
+  currentScene: scene.Scene
   startCoroutine: function(f: AnyFn, ...: any): thread
   stopCoroutine: function(cox: thread)
   updateCoroutines: function()
@@ -120,6 +121,7 @@ function sk.load()
 end
 
 function sk.update(dt: number)
+  sk.currentScene = sk.sceneStack.stack:peek()
   sk.updateInput()
   sk.updateCoroutines()
   sk.sceneStack:update(dt)

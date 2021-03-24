@@ -55,12 +55,12 @@ end
 
 function init:load(): SResult
   initInputCallbacks()
-  return scene.cont()
+  return scene.cont
 end
 
 
 function init:update(dt: number): SResult
-  return scene.cont()
+  return scene.cont
 end
 
 function init:drawWorld()

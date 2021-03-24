@@ -1,3 +1,5 @@
+--require "internal"
+
 local config = require "config"
 local sk = require "sidekick"
 

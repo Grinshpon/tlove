@@ -1,6 +1,6 @@
 local Stack = require "Stack"
 
-local gameObject = require("gameobject")
+local gameObject = require "gameobject"
 local GameObject = gameObject.GameObject
 
 local function noop(...:any): any
@@ -32,6 +32,10 @@ local type Mod = record
   type SceneStack = record
     stack: Stack<Scene>
   end
+  cont: SResult
+  pop: SResult
+  exit: SResult
+  push: function(Scene): SResult
 end
 local SResultTy = Mod.SResultTy
 local SResult = Mod.SResult
@@ -44,31 +48,6 @@ function Mod.initSceneStack(): SceneStack
   }
   setmetatable(s, {__index = SceneStack})
   return s
-end
-
-function Mod.cont(): SResult
-  return {
-    type = "Cont",
-    onPush = nil,
-  }
-end
-function Mod.push(s: Scene): SResult
-  return {
-    type = "Push",
-    onPush = s,
-  }
-end
-function Mod.pop(): SResult
-  return {
-    type = "Pop",
-    onPush = nil,
-  }
-end
-function Mod.exit(): SResult
-  return {
-    type = "Exit",
-    onPush = nil,
-  }
 end
 
 function SceneStack:handleResult(res: SResult)
@@ -154,8 +133,25 @@ function Scene:addGameObjectChild(parent: GameObject, child: GameObject)
   table.insert(parent.children, child)
 end
 
-local mod: Mod = setmetatable({} as Mod, { __index = Mod })
-
--- todo: scenestack operations
+local mod: Mod = setmetatable({
+  cont = {
+    type = "Cont",
+    onPush = nil,
+  },
+  pop = {
+    type = "Pop",
+    onPush = nil,
+  },
+  exit = {
+    type = "Exit",
+    onPush = nil,
+  },
+  push = function(s: Scene): SResult
+    return {
+      type = "Push",
+      onPush = s,
+    }
+  end
+} as Mod, { __index = Mod })
 
 return mod

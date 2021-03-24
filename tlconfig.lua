@@ -4,9 +4,14 @@ return {
   source_dir = "src",
   include_dir = {
     "src",
+    "src/framework",
     "include",
     --"assets",
   },
-  include = {"*.tl", "*.d.tl"},
+  include = {
+    "**/*.tl",
+    "*.tl",
+    "*.d.tl",
+  },
   build_dir = "app",
 }

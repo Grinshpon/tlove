@@ -1,5 +1,5 @@
 local alg = require "alg"
---local sidekick = require "sidekick"
+--local sidekick = import "sidekick"
 
 local record Mod
   record GameObject
@@ -8,9 +8,19 @@ local record Mod
     id: string
     parent: GameObject
     children: {GameObject}
+    components: {Component}
     enabled: boolean
   end
   zCmp: function(g1: GameObject, g2: GameObject): boolean
+
+  record Component
+    gameObject: GameObject
+    load: function(Component)
+    update: function(Component, number)
+    drawWorld: function(Component)
+    drawUI: function(Component)
+    drawRaw: function(Component)
+  end
 end
 local GameObject = Mod.GameObject
 
