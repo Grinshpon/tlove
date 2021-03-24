@@ -1,7 +1,8 @@
 
 
-local config = require("config")
+
 local sk = require("sidekick")
+local config = sk.config
 
 function love.load()
    print("Starting game")

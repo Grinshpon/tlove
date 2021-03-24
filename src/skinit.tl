@@ -1,9 +1,9 @@
-local config = require "config"
 local sk = require "sidekick"
-local input = require "input"
-local scene = require "scene"
+local config = sk.config
+local input = sk.input
+local scene = sk.scene
 
-local Stack = require "stack"
+local Stack = sk.Stack
 local SResult = scene.SResult
 
 -- initial scene

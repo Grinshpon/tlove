@@ -1,6 +1,8 @@
-local config = require "config"
-local input = require "input"
-local scene = require "scene"
+local config = require "framework/config"
+local gameObject = require "framework/gameObject"
+local input = require "framework/input"
+local scene = require "framework/scene"
+local Stack = require "framework/stack"
 
 global record Camera
   x: number
@@ -14,6 +16,7 @@ global enum TransformType
   "window"
 end
 
+--[[
 local record Sidekick
   camera: Camera
   coroutines: {thread}
@@ -33,13 +36,21 @@ local record Sidekick
   drawUI: function()
   drawRaw: function()
 end
+--]]
 
-local sk: Sidekick = {
---local sk = {
+--local sk: Sidekick = {
+local sk = {
+  config = config,
+  gameObject = gameObject,
+  input = input,
+  scene = scene,
+  Stack = Stack,
+
   camera: Camera = nil,
   coroutines: {thread} = {},
   coCount = 0,
   sceneStack: scene.SceneStack = nil,
+  currentScene: scene.Scene = nil,
 }
 
 -- Coroutine Handler --

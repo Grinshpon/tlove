@@ -1,6 +1,6 @@
-local Stack = require "Stack"
+local Stack = require "framework/Stack"
 
-local gameObject = require "gameobject"
+local gameObject = require "framework/gameobject"
 local GameObject = gameObject.GameObject
 
 local function noop(...:any): any

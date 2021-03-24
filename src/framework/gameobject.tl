@@ -1,4 +1,4 @@
-local alg = require "alg"
+local alg = require "framework/alg"
 --local sidekick = import "sidekick"
 
 local record Mod
