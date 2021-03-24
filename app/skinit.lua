@@ -26,6 +26,7 @@ local camActions = {
 }
 
 local function initInputCallbacks()
+   local panSpeed = 400
    camActions.actions.zoomIn.pressed = function()
       if sk.camera.scale < 3 then
          sk.camera.scale = sk.camera.scale + 1
@@ -37,16 +38,16 @@ local function initInputCallbacks()
       end
    end
    camActions.actions.panLeft.down = function()
-      sk.camera.x = sk.camera.x + config.panSpeed * love.timer.getDelta()
+      sk.camera.x = sk.camera.x + panSpeed * love.timer.getDelta()
    end
    camActions.actions.panRight.down = function()
-      sk.camera.x = sk.camera.x - config.panSpeed * love.timer.getDelta()
+      sk.camera.x = sk.camera.x - panSpeed * love.timer.getDelta()
    end
    camActions.actions.panDown.down = function()
-      sk.camera.y = sk.camera.y - config.panSpeed * love.timer.getDelta()
+      sk.camera.y = sk.camera.y - panSpeed * love.timer.getDelta()
    end
    camActions.actions.panUp.down = function()
-      sk.camera.y = sk.camera.y + config.panSpeed * love.timer.getDelta()
+      sk.camera.y = sk.camera.y + panSpeed * love.timer.getDelta()
    end
 
    input.addActionMap(camActions)

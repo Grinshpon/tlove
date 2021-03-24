@@ -115,7 +115,7 @@ function sk.setTransform(ttype)
    if ttype == nil or ttype == "window" then
 
    elseif ttype == "world" then
-      love.graphics.translate(sk.camera.x + config.width / 2, sk.camera.y + config.height / 2)
+      love.graphics.translate(sk.camera.x, sk.camera.y)
       love.graphics.scale(sk.camera.scale)
    elseif ttype == "ui" then
       love.graphics.scale(love.graphics.getHeight() / config.height)
