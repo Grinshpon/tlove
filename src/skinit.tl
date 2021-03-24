@@ -69,7 +69,6 @@ function init:update(dt: number): SResult
 end
 
 function init:drawWorld()
-  love.graphics.print("Hello world",0,50)
   --local s = Stack.init(1);
   --local s1 = Stack.new() as Stack<number>;
   --s:push(2)
@@ -82,6 +81,7 @@ function init:drawUI()
 end
 
 function init:drawRaw()
+  love.graphics.print(tostring(love.timer.getFPS()),0,0)
 end
 
 return init
