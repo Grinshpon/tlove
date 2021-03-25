@@ -62,8 +62,6 @@ function init:load(): SResult
 
   local g = sk.gameObject.GameObject.new("test")
   local c = sk.sprite.newSprite("assets/ship1.png")
-  --g.scale = 2
-  --g.rot = 0--math.pi/4
   g:addComponent(c)
   self:addGameObject(g)
   g.transform:scale(2,2)
@@ -77,9 +75,6 @@ function init:load(): SResult
   local c1 = sk.sprite.newSprite("assets/center.png")
   local g1 = sk.gameObject.GameObject.new {
     id = "test 1",
-    --pos = {30, 30, -1},
-    --rot = math.pi,
-    --scale = 0.5,
     z = -1,
     components = {c1},
   }
@@ -91,7 +86,6 @@ end
 
 
 function init:update(_dt: number): SResult
-  --g.rot = g.rot + _dt
   g0.transform:rotate(_dt)
   return scene.cont
 end

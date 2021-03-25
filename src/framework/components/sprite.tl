@@ -10,39 +10,26 @@ local record SpriteComp
   origin: {number}
  end
 
+-- TODO: pull out draw logic into generic drawTexture function
 function mod.newSprite(fp: string): Component
   local sprite = {
     gameObject = nil,
     spr = love.graphics.newImage(fp),
     origin = {0.0,0.0},
     drawWorld = function(self: SpriteComp)
-      --local t = self.gameObject:getTransform()
       local t = self.gameObject.transform
       local p = self.gameObject.parent
       local i: integer = 0
-      --love.graphics.push()
-      --love.graphics.translate(self.gameObject.offset[1],self.gameObject.offset[2])
-      --love.graphics.applyTransform(t)
       while p do
         i = i+1
         t = p.transform
         love.graphics.push()
-        --love.graphics.translate(-p.offset[1],-p.offset[2])
         love.graphics.applyTransform(t)
         p = p.parent
-        --if p then t = p.transform end
       end
-      --local x,y = t:get(1,1) + t:get(1,2) + t:get(1,3), t:get(2,1) + t:get(2,2) + t:get(2,3)
-      --local x,y = t:get(1,3), t:get(2,3)
-      --local sx,sy = t:get(1,1), t:get(2,2)
-      --rotation is placeholder
-      --love.graphics.draw(self.spr as love.graphics.Drawable, x,y, 0, sx,sy, self.origin[1], self.origin[2])
-      --love.graphics.draw(self.spr as love.graphics.Drawable, t, self.origin[1], self.origin[2])
-      --t:translate(-self.origin[1],-self.origin[2])
       t = self.gameObject.transform:clone()
       t:translate(-self.origin[1], -self.origin[2])
-      love.graphics.draw(self.spr as love.graphics.Drawable, t)--self.gameObject.transform)
-      --t:translate(self.origin[1],self.origin[2])
+      love.graphics.draw(self.spr as love.graphics.Drawable, t)
       while i > 0 do
         love.graphics.pop()
         i = i - 1

@@ -33,9 +33,6 @@ function GameObject.new(o: string | GameObject): GameObject
   local g: GameObject = nil
   if o is string then
     g = {
-      --pos=alg.Vector3i.new(0,0,0),
-      --rot=0,
-      --scale = 1,
       transform = love.math.newTransform(),
       z = 0,
       id=o,
@@ -46,9 +43,6 @@ function GameObject.new(o: string | GameObject): GameObject
     }
   else
     g = o
-    --g.pos = g.pos or alg.Vector3i.new(0,0,0)
-    --g.rot = g.rot or 0
-    --g.scale = g.scale or 1
     g.transform = g.transform or love.math.newTransform()
     g.z = g.z or 0
     g.id = g.id or "game object"
