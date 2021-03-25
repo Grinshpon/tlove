@@ -28,4 +28,4 @@ run: build
 	love app
 
 clean:
-	$(REMOVE) -r app/**/*.*
+	$(REMOVE) app/**/*.*

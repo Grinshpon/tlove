@@ -60,10 +60,19 @@ function init:load()
    local g = sk.gameObject.GameObject.new("test")
    local c = sk.sprite.newSprite("assets/ship1.png")
    g.pos[1] = 0
-   g.rot = 12
    g.scale = 2
+   g.rot = math.pi / 4
    g:addComponent(c)
    self:addGameObject(g)
+
+   local g1 = sk.gameObject.GameObject.new("test")
+   local c1 = sk.sprite.newSprite("assets/ship1.png")
+   g1.pos[1] = 100
+   g1.pos[2] = 100
+   g1.rot = math.pi
+   g1.scale = 0.5
+   g1:addComponent(c1)
+   self:addGameObjectChild(g, g1)
    return scene.cont
 end
 
