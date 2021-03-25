@@ -33,7 +33,8 @@ local record Input
 end
 local KeyAction = Input.KeyAction
 local ActionMap = Input.ActionMap
-local Mouse = Input.Mouse
+--local Mouse = Input.Mouse
+
 --function KeyAction.new(o: KeyAction): KeyAction
   --return setmetatable(o,{__index=KeyAction})
   --local self: KeyAction = setmetatable({}, { __index = KeyAction })

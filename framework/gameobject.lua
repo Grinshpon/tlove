@@ -22,7 +22,6 @@ local Mod = {GameObject = {}, Component = {}, }
 
 
 
-
 local GameObject = Mod.GameObject
 local Component = Mod.Component
 
@@ -30,7 +29,6 @@ function GameObject.new(id)
    local s = {
       pos = alg.Vector3i.new(0, 0, 0),
       rot = 0,
-      scale = 1,
       id = id,
       parent = nil,
       children = {},
@@ -64,16 +62,6 @@ function GameObject:rotation()
       p = p.parent
    end
    return r
-end
-
-function GameObject:getScale()
-   local s = self.scale
-   local p = self.parent
-   while p do
-      s = s * p.scale
-      p = p.parent
-   end
-   return s
 end
 
 function Mod.zCmp(g1, g2)

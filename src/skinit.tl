@@ -1,17 +1,17 @@
 local sk = require "sidekick"
-local config = sk.config
+--local config = sk.config
 local input = sk.input
 local scene = sk.scene
 
-local Stack = sk.Stack
+--local Stack = sk.Stack
 local SResult = scene.SResult
 
 -- initial scene
 local init = scene.Scene.new();
 
-local function initCursor()
-  --self.cursor = love.graphics.newImage("assets/cursor.png") as love.graphics.Drawable
-end
+--local function initCursor()
+--  self.cursor = love.graphics.newImage("assets/cursor.png") as love.graphics.Drawable
+--end
 
 local camActions: input.ActionMap = {
   actions = {
@@ -59,13 +59,16 @@ function init:load(): SResult
 
   local g = sk.gameObject.GameObject.new("test")
   local c = sk.sprite.newSprite("assets/ship1.png")
+  g.pos[1] = 0 --1280//2
+  g.rot = 12
+  g.scale = 2
   g:addComponent(c)
   self:addGameObject(g)
   return scene.cont
 end
 
 
-function init:update(dt: number): SResult
+function init:update(_dt: number): SResult
   return scene.cont
 end
 

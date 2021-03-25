@@ -3,8 +3,7 @@ local Stack = require "framework/Stack"
 local gameObject = require "framework/gameobject"
 local GameObject = gameObject.GameObject
 
-local function noop(...:any): any
-end
+--local function noop(...:any): any end
 
 local type Mod = record
   type SResultTy = enum
@@ -37,7 +36,7 @@ local type Mod = record
   exit: SResult
   push: function(Scene): SResult
 end
-local SResultTy = Mod.SResultTy
+--local SResultTy = Mod.SResultTy
 local SResult = Mod.SResult
 local Scene = Mod.Scene
 local SceneStack = Mod.SceneStack
@@ -76,8 +75,10 @@ function SceneStack:update(dt: number)
     if i == 1 then
       if scene.update then
         for _,g in ipairs(scene.gameObjects) do
-          for _,c in ipairs(g.components) do
-            if c.update then c:update(dt) end
+          if g.enabled then
+            for _,c in ipairs(g.components) do
+              if c.update then c:update(dt) end
+            end
           end
         end
         table.sort(scene.gameObjects, gameObject.zCmp)
@@ -94,8 +95,10 @@ function SceneStack:drawWorld()
   local scene = self.stack:peek()
   if (not scene) then return end
   for _,g in ipairs(scene.gameObjects) do
-    for _,c in ipairs(g.components) do
-      if c.drawWorld then c:drawWorld() end
+    if g.enabled then
+      for _,c in ipairs(g.components) do
+        if c.drawWorld then c:drawWorld() end
+      end
     end
   end
   scene:drawWorld()
@@ -105,8 +108,10 @@ function SceneStack:drawUI()
   local scene = self.stack:peek()
   if (not scene) then return end
   for _,g in ipairs(scene.gameObjects) do
-    for _,c in ipairs(g.components) do
-      if c.drawUI then c:drawUI() end
+    if g.enabled then
+      for _,c in ipairs(g.components) do
+        if c.drawUI then c:drawUI() end
+      end
     end
   end
   scene:drawUI()
@@ -116,8 +121,10 @@ function SceneStack:drawRaw()
   local scene = self.stack:peek()
   if (not scene) then return end
   for _,g in ipairs(scene.gameObjects) do
-    for _,c in ipairs(g.components) do
-      if c.drawRaw then c:drawRaw() end
+    if g.enabled then
+      for _,c in ipairs(g.components) do
+        if c.drawRaw then c:drawRaw() end
+      end
     end
   end
   scene:drawRaw()

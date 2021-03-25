@@ -33,8 +33,7 @@ local Input = {KeyAction = {}, ActionMap = {}, Mouse = {}, }
 
 local KeyAction = Input.KeyAction
 local ActionMap = Input.ActionMap
-
-
+local Mouse = Input.Mouse
 
 
 

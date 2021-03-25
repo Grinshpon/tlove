@@ -15,7 +15,7 @@ function mod.newSprite(fp)
       spr = love.graphics.newImage(fp),
       drawWorld = function(self)
          local x, y = self.gameObject:position()
-         love.graphics.draw(self.spr, x, y, self.gameObject:rotation(), self.gameObject:getScale())
+         love.graphics.draw(self.spr, x, y, self.gameObject:rotation())
       end,
    }
    return sprite

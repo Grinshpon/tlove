@@ -3,8 +3,9 @@ local alg = require "framework/alg"
 
 local record Mod
   record GameObject
-    pos: alg.Vector3i
-    rot: number
+    pos: alg.Vector3i --local position
+    rot: number -- local rotation
+    scale: number -- local scale
     id: string
     parent: GameObject
     children: {GameObject}
@@ -29,6 +30,7 @@ function GameObject.new(id: string): GameObject
   local s: GameObject = {
     pos=alg.Vector3i.new(0,0,0),
     rot=0,
+    scale = 1,
     id=id,
     parent = nil,
     children = {},
@@ -62,6 +64,16 @@ function GameObject:rotation(): number
     p = p.parent
   end
   return r
+end
+
+function GameObject:getScale(): number
+  local s = self.scale
+  local p = self.parent
+  while p do
+    s = s*p.scale
+    p = p.parent
+  end
+  return s
 end
 
 function Mod.zCmp(g1: GameObject, g2: GameObject): boolean
