@@ -5,7 +5,6 @@ local sk = require "sidekick"
 --local config = sk.config
 
 function love.load()
-  print("Starting game")
   --print(love.window.getDPIScale())
   sk.load()
   local initScene = require "skinit"

@@ -55,6 +55,7 @@ local function initInputCallbacks()
 end
 
 function init:load(): SResult
+  print("Starting game")
   initInputCallbacks()
 
   local g = sk.gameObject.GameObject.new("test")
@@ -65,13 +66,14 @@ function init:load(): SResult
   g:addComponent(c)
   self:addGameObject(g)
 
-  local g1 = sk.gameObject.GameObject.new("test")
   local c1 = sk.sprite.newSprite("assets/ship1.png")
-  g1.pos[1] = 100
-  g1.pos[2] = 100
-  g1.rot = math.pi
-  g1.scale = 0.5
-  g1:addComponent(c1)
+  local g1 = sk.gameObject.GameObject.new {
+    id = "test 1",
+    pos = {100, 100, 0},
+    rot = math.pi,
+    scale = 0.5,
+    components = {c1},
+  }
   self:addGameObjectChild(g,g1)
   return scene.cont
 end

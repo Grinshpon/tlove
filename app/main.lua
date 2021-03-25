@@ -5,7 +5,6 @@ local sk = require("sidekick")
 
 
 function love.load()
-   print("Starting game")
 
    sk.load()
    local initScene = require("skinit")

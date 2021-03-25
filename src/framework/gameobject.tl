@@ -26,18 +26,33 @@ end
 local GameObject = Mod.GameObject
 local Component = Mod.Component
 
-function GameObject.new(id: string): GameObject
-  local s: GameObject = {
-    pos=alg.Vector3i.new(0,0,0),
-    rot=0,
-    scale = 1,
-    id=id,
-    parent = nil,
-    children = {},
-    components = {},
-    enabled = true,
-  }
-  local self = setmetatable(s, {__index = GameObject})
+function GameObject.new(o: string | GameObject): GameObject
+  local g: GameObject = nil
+  if o is string then
+    g = {
+      pos=alg.Vector3i.new(0,0,0),
+      rot=0,
+      scale = 1,
+      id=o,
+      parent = nil,
+      children = {},
+      components = {},
+      enabled = true,
+    }
+  else
+    g = o
+    g.pos = g.pos or alg.Vector3i.new(0,0,0)
+    g.rot = g.rot or 0
+    g.scale = g.scale or 1
+    g.id = g.id or "game object"
+    g.children = g.children or {}
+    g.components = g.components or {}
+    g.enabled = g.enabled or true
+    for _,c in ipairs(g.components) do
+      c.gameObject = g
+    end
+  end
+  local self = setmetatable(g, {__index = GameObject})
   return self
 end
 
@@ -77,7 +92,9 @@ function GameObject:getScale(): number
 end
 
 function Mod.zCmp(g1: GameObject, g2: GameObject): boolean
-  if g1.pos[3] > g2.pos[3] then return true
+  local _,_,z1 = g1:position()
+  local _,_,z2 = g2:position()
+  if z1 > z2 then return true
   else return false
   end
 end
