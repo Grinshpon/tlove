@@ -1,7 +1,10 @@
 local alg = require("framework/alg")
+local Transform = alg.Transform
 
 
 local Mod = {GameObject = {}, Component = {}, }
+
+
 
 
 
@@ -30,9 +33,11 @@ function GameObject.new(o)
    local g = nil
    if type(o) == "string" then
       g = {
-         pos = alg.Vector3i.new(0, 0, 0),
-         rot = 0,
-         scale = 1,
+
+
+
+         transform = Transform.new(),
+         z = 0,
          id = o,
          parent = nil,
          children = {},
@@ -41,9 +46,11 @@ function GameObject.new(o)
       }
    else
       g = o
-      g.pos = g.pos or alg.Vector3i.new(0, 0, 0)
-      g.rot = g.rot or 0
-      g.scale = g.scale or 1
+
+
+
+      g.transform = g.transform or Transform.new()
+      g.z = g.z or 0
       g.id = g.id or "game object"
       g.children = g.children or {}
       g.components = g.components or {}
@@ -61,40 +68,62 @@ function GameObject:addComponent(c)
    table.insert(self.components, c)
 end
 
-function GameObject:position()
-   local x, y, z = self.pos[1], self.pos[2], self.pos[3]
+function GameObject:getTransform()
+   local t = self.transform:copy()
    local p = self.parent
    while p do
-      x, y, z = x + p.pos[1], y + p.pos[2], z + p.pos[3]
+      t:mulBy(p.transform)
       p = p.parent
    end
-   return x, y, z
+   return t
 end
 
-function GameObject:rotation()
-   local r = self.rot
-   local p = self.parent
-   while p do
-      r = r + p.rot
-      p = p.parent
-   end
-   return r
-end
 
-function GameObject:getScale()
-   local s = self.scale
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function GameObject:order()
+   local z = self.z
    local p = self.parent
    while p do
-      s = s * p.scale
+      z = z + p.z
       p = p.parent
    end
-   return s
+   return z
 end
 
 function Mod.zCmp(g1, g2)
-   local _, _, z1 = g1:position()
-   local _, _, z2 = g2:position()
-   if z1 > z2 then return true
+   local z1 = g1:order()
+   local z2 = g2:order()
+   if z1 < z2 then return true
    else return false
    end
 end

@@ -54,32 +54,36 @@ local function initInputCallbacks()
    input.enable(camActions)
 end
 
+
+local g = sk.gameObject.GameObject.new("test")
 function init:load()
    print("Starting game")
    initInputCallbacks()
 
-   local g = sk.gameObject.GameObject.new("test")
    local c = sk.sprite.newSprite("assets/ship1.png")
-   g.pos[1] = 0
-   g.scale = 2
-   g.rot = math.pi / 4
+
+
    g:addComponent(c)
    self:addGameObject(g)
+   g.transform:scale(2, 2)
 
    local c1 = sk.sprite.newSprite("assets/ship1.png")
    local g1 = sk.gameObject.GameObject.new({
       id = "test 1",
-      pos = { 100, 100, 0 },
-      rot = math.pi,
-      scale = 0.5,
+
+
+
       components = { c1 },
    })
    self:addGameObjectChild(g, g1)
+   g1.transform:scale(0.5, 0.5)
+   g1.transform:translate(50, 50)
    return scene.cont
 end
 
 
 function init:update(_dt)
+
    return scene.cont
 end
 
