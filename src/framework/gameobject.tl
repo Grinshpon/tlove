@@ -1,5 +1,5 @@
-local alg = require "framework/alg"
-local Transform = alg.Transform
+--local alg = require "framework/alg"
+local Transform = love.math.Transform
 --local sidekick = import "sidekick"
 
 local record Mod
@@ -36,7 +36,7 @@ function GameObject.new(o: string | GameObject): GameObject
       --pos=alg.Vector3i.new(0,0,0),
       --rot=0,
       --scale = 1,
-      transform = Transform.new(),
+      transform = love.math.newTransform(),
       z = 0,
       id=o,
       parent = nil,
@@ -49,7 +49,7 @@ function GameObject.new(o: string | GameObject): GameObject
     --g.pos = g.pos or alg.Vector3i.new(0,0,0)
     --g.rot = g.rot or 0
     --g.scale = g.scale or 1
-    g.transform = g.transform or Transform.new()
+    g.transform = g.transform or love.math.newTransform()
     g.z = g.z or 0
     g.id = g.id or "game object"
     g.children = g.children or {}
@@ -69,10 +69,10 @@ function GameObject:addComponent(c: Component)
 end
 
 function GameObject:getTransform(): Transform
-  local t = self.transform:copy()
+  local t = self.transform:clone()
   local p = self.parent
   while p do
-    t:mulBy(p.transform)
+    t:apply(p.transform)
     p = p.parent
   end
   return t

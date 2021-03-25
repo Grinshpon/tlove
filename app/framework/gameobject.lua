@@ -1,5 +1,5 @@
-local alg = require("framework/alg")
-local Transform = alg.Transform
+
+local Transform = love.math.Transform
 
 
 local Mod = {GameObject = {}, Component = {}, }
@@ -36,7 +36,7 @@ function GameObject.new(o)
 
 
 
-         transform = Transform.new(),
+         transform = love.math.newTransform(),
          z = 0,
          id = o,
          parent = nil,
@@ -49,7 +49,7 @@ function GameObject.new(o)
 
 
 
-      g.transform = g.transform or Transform.new()
+      g.transform = g.transform or love.math.newTransform()
       g.z = g.z or 0
       g.id = g.id or "game object"
       g.children = g.children or {}
@@ -69,10 +69,10 @@ function GameObject:addComponent(c)
 end
 
 function GameObject:getTransform()
-   local t = self.transform:copy()
+   local t = self.transform:clone()
    local p = self.parent
    while p do
-      t:mulBy(p.transform)
+      t:apply(p.transform)
       p = p.parent
    end
    return t

@@ -89,8 +89,8 @@ end
 
 function Transform:rotate(r)
    self[1] = math.cos(r) * self[1]
-   self[2] = math.sin(r)
-   self[4] = -math.sin(r)
+   self[2] = -math.sin(r)
+   self[4] = math.sin(r)
    self[5] = math.cos(r) * self[5]
 end
 

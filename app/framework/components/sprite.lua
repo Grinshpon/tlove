@@ -16,11 +16,37 @@ function mod.newSprite(fp)
       spr = love.graphics.newImage(fp),
       origin = { 0.0, 0.0 },
       drawWorld = function(self)
-         local t = self.gameObject:getTransform()
-         local x, y = t:get(1, 3), t:get(2, 3)
-         local sx, sy = t:get(1, 1), t:get(2, 2)
 
-         love.graphics.draw(self.spr, x, y, 0, sx, sy, self.origin[1], self.origin[2])
+         local t = self.gameObject.transform
+         local p = self.gameObject.parent
+         local i = 0
+
+
+
+         while p do
+            i = i + 1
+            t = p.transform
+            love.graphics.push()
+
+            love.graphics.applyTransform(t)
+            p = p.parent
+
+         end
+
+
+
+
+
+
+
+         t = self.gameObject.transform:clone()
+         t:translate(-self.origin[1], -self.origin[2])
+         love.graphics.draw(self.spr, t)
+
+         while i > 0 do
+            love.graphics.pop()
+            i = i - 1
+         end
       end,
    }
    local ox, oy = (sprite.spr):getDimensions()

@@ -55,11 +55,12 @@ local function initInputCallbacks()
 end
 
 
-local g = sk.gameObject.GameObject.new("test")
+local g0 = sk.gameObject.GameObject.new("test 0")
 function init:load(): SResult
   print("Starting game")
   initInputCallbacks()
 
+  local g = sk.gameObject.GameObject.new("test")
   local c = sk.sprite.newSprite("assets/ship1.png")
   --g.scale = 2
   --g.rot = 0--math.pi/4
@@ -67,23 +68,31 @@ function init:load(): SResult
   self:addGameObject(g)
   g.transform:scale(2,2)
 
-  local c1 = sk.sprite.newSprite("assets/ship1.png")
+  local c0 = sk.sprite.newSprite("assets/center.png")
+  g0.z = 2
+  g0:addComponent(c0)
+  g0.transform:rotate(math.pi/4)
+  self:addGameObjectChild(g,g0)
+
+  local c1 = sk.sprite.newSprite("assets/center.png")
   local g1 = sk.gameObject.GameObject.new {
     id = "test 1",
     --pos = {30, 30, -1},
     --rot = math.pi,
     --scale = 0.5,
+    z = -1,
     components = {c1},
   }
-  self:addGameObjectChild(g,g1)
+  self:addGameObjectChild(g0,g1)
   g1.transform:scale(0.5,0.5)
-  g1.transform:translate(50,50)
+  g1.transform:translate(70,0)
   return scene.cont
 end
 
 
 function init:update(_dt: number): SResult
   --g.rot = g.rot + _dt
+  g0.transform:rotate(_dt)
   return scene.cont
 end
 
