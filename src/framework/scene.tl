@@ -91,8 +91,6 @@ function SceneStack:update(dt: number)
             end
             if g.body then
               local x,y = g:getTransform():transformPoint(0,0)
-              --x,y = -x,-y
-              --print(x,y)
               g.body:setPosition(x,y)
             end
           end
@@ -160,6 +158,8 @@ local function beginContactCallback(s: Scene): function(Fixture,Fixture,Contact)
   return callback
 end
 
+--todo: complete callbacks
+
 function Scene.new(): Scene
   local s: Scene = {
     world = love.physics.newWorld(),
@@ -193,7 +193,6 @@ end
 
 function Scene:addBodyToObject(object: GameObject, type: BodyType)
   local x,y = object:getTransform():transformPoint(0,0)
-  --x,y = -x,-y
   print(x,y)
   object.body = love.physics.newBody(self.world,x,y,type)
 end
