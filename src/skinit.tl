@@ -63,6 +63,11 @@ function init:load(): SResult
   local g = sk.gameObject.GameObject.new("test")
   local c = sk.sprite.newSprite("assets/ship1.png")
   g:addComponent(c)
+  --g:addBody(sk.body.Body.new(self:world))
+  --g:addComponent(sk.body.Shape.new())
+  --or
+  self:addBodyToObject(g,"dynamic")
+  self:addColliderToObject(g,love.physics.newCircleShape(1) as love.physics.Shape)
   self:addGameObject(g)
   g.transform:scale(2,2)
 
@@ -97,6 +102,10 @@ function init:drawWorld()
   --s1:push(30)
   --love.graphics.print(tostring(s:pop()), 100,100)
   --love.graphics.print(tostring(s1:pop()), 110,110)
+  for _,b in ipairs(self.world:getBodies()) do
+    local x,y = b:getPosition()
+    love.graphics.circle("fill",x,y,10)
+  end
 end
 
 function init:drawUI()

@@ -3,6 +3,8 @@ local type Stack = record<T>
   len: integer
 end
 
+local stack_mt = {__index = Stack}
+
 function Stack:push<T>(item: T)
   table.insert(self.data, item)
   self.len = self.len+1
@@ -27,7 +29,7 @@ end
 
 function Stack.init<T>(item: T): Stack<T>
   local s = {} as Stack<T>
-  local self = setmetatable(s, { __index = Stack })
+  local self = setmetatable(s, stack_mt)
   self.data = {item}
   self.len = 1
   return s
@@ -35,7 +37,7 @@ end
 
 function Stack.new<T>(): Stack<T>
   local s = {} as Stack<T>
-  local self = setmetatable(s, { __index = Stack })
+  local self = setmetatable(s, stack_mt)
   self.data = {} as {T}
   self.len = 0
   return s

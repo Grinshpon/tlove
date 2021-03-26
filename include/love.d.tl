@@ -2148,6 +2148,7 @@ global type love = record
 		end
 
 		type World = record
+			setCallbacks: function(World, function(Fixture,Fixture,Contact), function(Fixture,Fixture,Contact), function(Fixture,Fixture,Contact), function(Fixture,Fixture,Contact))
 			destroy: function(self: World)
 			getBodies: function(self: World): {Body}
 			getBodyCount: function(self: World): number

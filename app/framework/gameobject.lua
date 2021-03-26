@@ -26,19 +26,20 @@ local Mod = {GameObject = {}, Component = {}, }
 
 
 
+
 local GameObject = Mod.GameObject
 local Component = Mod.Component
+
+local GO_mt = { __index = GameObject }
 
 function GameObject.new(o)
    local g = nil
    if type(o) == "string" then
       g = {
-
-
-
          transform = love.math.newTransform(),
          z = 0,
          id = o,
+         body = nil,
          parent = nil,
          children = {},
          components = {},
@@ -46,9 +47,6 @@ function GameObject.new(o)
       }
    else
       g = o
-
-
-
       g.transform = g.transform or love.math.newTransform()
       g.z = g.z or 0
       g.id = g.id or "game object"
@@ -59,13 +57,17 @@ function GameObject.new(o)
          c.gameObject = g
       end
    end
-   local self = setmetatable(g, { __index = GameObject })
+   local self = setmetatable(g, GO_mt)
    return self
 end
 
 function GameObject:addComponent(c)
    c.gameObject = self
    table.insert(self.components, c)
+end
+
+function GameObject:addBody(body)
+   self.body = body
 end
 
 function GameObject:getTransform()

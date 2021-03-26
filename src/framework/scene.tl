@@ -1,9 +1,16 @@
-local Stack = require "framework/Stack"
+local Stack <const> = require "framework/Stack"
 
-local gameObject = require "framework/gameobject"
-local GameObject = gameObject.GameObject
+local gameObject <const> = require "framework/gameobject"
+local GameObject <const> = gameObject.GameObject
+local Component <const> = gameObject.Component
 
---local function noop(...:any): any end
+local Collider <const> = require("framework/components/collider").Collider
+
+local Fixture <const> = love.physics.Fixture
+local Contact <const> = love.physics.Contact
+--local Body <const> = love.physics.Body
+local BodyType <const> = love.physics.BodyType
+local Shape <const> = love.physics.Shape
 
 local type Mod = record
   type SResultTy = enum
@@ -17,9 +24,10 @@ local type Mod = record
     onPush: Scene | nil
   end
   type Scene = record
+    world: love.physics.World
+    _f2c: {Fixture:Collider} --associates fixtures with gameobjects for callbacks
     root: GameObject
     gameObjects: {GameObject}
-    --gameObjectIndex: {string:number} -- reason gameObjects isn't a map is because I'm hoping it gets optimized by the JIT by being a list.
     load: function(self: Scene, prev: Scene): SResult --on first time load, called once
     awake: function(self: Scene, prev: Scene): SResult --called whenver scene becomes active
     update: function(self: Scene, dt: number): SResult
@@ -41,11 +49,13 @@ local SResult = Mod.SResult
 local Scene = Mod.Scene
 local SceneStack = Mod.SceneStack
 
+local SS_mt = {__index = SceneStack}
+
 function Mod.initSceneStack(): SceneStack
   local s = {
     stack = Stack.new() as Stack<Scene>,
   }
-  setmetatable(s, {__index = SceneStack})
+  setmetatable(s, SS_mt)
   return s
 end
 
@@ -132,8 +142,22 @@ end
 
 -- Scene
 
+local Scene_mt = {__index = Scene}
+
+local function beginContactCallback(s: Scene): function(Fixture,Fixture,Contact)
+  function callback(f1: Fixture, f2: Fixture, contact: Contact)
+    local collider1 = s._f2c[f1]
+    local collider2 = s._f2c[f2]
+    if collider1 then collider1.beginContact(collider2, contact) end
+    if collider2 then collider2.beginContact(collider1, contact) end
+  end
+  return callback
+end
+
 function Scene.new(): Scene
   local s: Scene = {
+    world = love.physics.newWorld(),
+    _f2c = {},
     root = GameObject.new("root"),
     gameObjects = {},
     --gameObjectIndex = {},
@@ -145,7 +169,8 @@ function Scene.new(): Scene
     --drawUI = noop,
     --drawRaw = noop,
   }
-  local self = setmetatable(s, {__index = Scene})
+  s.world:setCallbacks(beginContactCallback(s), nil, nil, nil)
+  local self = setmetatable(s, Scene_mt)
   return self
 end
 
@@ -159,6 +184,20 @@ function Scene:addGameObjectChild(parent: GameObject, child: GameObject)
   child.parent = parent
   table.insert(parent.children, child)
 end
+
+function Scene:addBodyToObject(object: GameObject, type: BodyType)
+  local x,y = object:getTransform():inverseTransformPoint(0,0)
+  object.body = love.physics.newBody(self.world,x,y,type)
+end
+
+function Scene:addColliderToObject(object: GameObject, shape: Shape)
+  local fixture = love.physics.newFixture(object.body,shape)
+  local collider = Collider.new(fixture)
+  object:addComponent(collider as Component)
+  self._f2c[fixture] = collider
+end
+
+-- mod
 
 local mod: Mod = setmetatable({
   cont = {

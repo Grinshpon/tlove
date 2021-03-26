@@ -10,6 +10,7 @@ local record Mod
     transform: Transform -- local transformation matrix
     z: integer
     id: string
+    body: love.physics.Body
     parent: GameObject
     children: {GameObject}
     components: {Component}
@@ -29,6 +30,8 @@ end
 local GameObject = Mod.GameObject
 local Component = Mod.Component
 
+local GO_mt = {__index = GameObject}
+
 function GameObject.new(o: string | GameObject): GameObject
   local g: GameObject = nil
   if o is string then
@@ -36,6 +39,7 @@ function GameObject.new(o: string | GameObject): GameObject
       transform = love.math.newTransform(),
       z = 0,
       id=o,
+      body = nil,
       parent = nil,
       children = {},
       components = {},
@@ -53,13 +57,17 @@ function GameObject.new(o: string | GameObject): GameObject
       c.gameObject = g
     end
   end
-  local self = setmetatable(g, {__index = GameObject})
+  local self = setmetatable(g, GO_mt)
   return self
 end
 
 function GameObject:addComponent(c: Component)
   c.gameObject = self
   table.insert(self.components, c)
+end
+
+function GameObject:addBody(body: love.physics.Body)
+  self.body = body
 end
 
 function GameObject:getTransform(): Transform

@@ -1,6 +1,7 @@
 local config = require("framework/config")
 local gameObject = require("framework/gameobject")
 local input = require("framework/input")
+
 local scene = require("framework/scene")
 local Stack = require("framework/stack")
 
@@ -45,6 +46,7 @@ local sk = {
    config = config,
    gameObject = gameObject,
    input = input,
+
    scene = scene,
    Stack = Stack,
 

@@ -2,10 +2,18 @@ local Stack = require("framework/Stack")
 
 local gameObject = require("framework/gameobject")
 local GameObject = gameObject.GameObject
+local Component = gameObject.Component
 
+local Collider = require("framework/components/collider").Collider
 
+local Fixture = love.physics.Fixture
+local Contact = love.physics.Contact
+
+local BodyType = love.physics.BodyType
+local Shape = love.physics.Shape
 
 local Mod = {SResult = {}, Scene = {}, SceneStack = {}, }
+
 
 
 
@@ -41,11 +49,13 @@ local SResult = Mod.SResult
 local Scene = Mod.Scene
 local SceneStack = Mod.SceneStack
 
+local SS_mt = { __index = SceneStack }
+
 function Mod.initSceneStack()
    local s = {
       stack = Stack.new(),
    }
-   setmetatable(s, { __index = SceneStack })
+   setmetatable(s, SS_mt)
    return s
 end
 
@@ -132,8 +142,22 @@ end
 
 
 
+local Scene_mt = { __index = Scene }
+
+local function beginContactCallback(s)
+   function callback(f1, f2, contact)
+      local collider1 = s._f2c[f1]
+      local collider2 = s._f2c[f2]
+      if collider1 then collider1.beginContact(collider2, contact) end
+      if collider2 then collider2.beginContact(collider1, contact) end
+   end
+   return callback
+end
+
 function Scene.new()
    local s = {
+      world = love.physics.newWorld(),
+      _f2c = {},
       root = GameObject.new("root"),
       gameObjects = {},
 
@@ -145,7 +169,8 @@ function Scene.new()
 
 
    }
-   local self = setmetatable(s, { __index = Scene })
+   s.world:setCallbacks(beginContactCallback(s), nil, nil, nil)
+   local self = setmetatable(s, Scene_mt)
    return self
 end
 
@@ -159,6 +184,20 @@ function Scene:addGameObjectChild(parent, child)
    child.parent = parent
    table.insert(parent.children, child)
 end
+
+function Scene:addBodyToObject(object, type)
+   local x, y = object:getTransform():inverseTransformPoint(0, 0)
+   object.body = love.physics.newBody(self.world, x, y, type)
+end
+
+function Scene:addColliderToObject(object, shape)
+   local fixture = love.physics.newFixture(object.body, shape)
+   local collider = Collider.new(fixture)
+   object:addComponent(collider)
+   self._f2c[fixture] = collider
+end
+
+
 
 local mod = setmetatable({
    cont = {

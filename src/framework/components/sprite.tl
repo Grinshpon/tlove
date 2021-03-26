@@ -2,13 +2,16 @@ local gameobject = require "framework/gameobject"
 local GameObject = gameobject.GameObject
 local Component = gameobject.Component
 
-local mod = {}
 
 local record SpriteComp
   gameObject: GameObject
   spr: love.graphics.Texture
   origin: {number}
- end
+end
+
+local mod = {
+  SpriteComp = SpriteComp
+}
 
 -- TODO: pull out draw logic into generic drawTexture function
 function mod.newSprite(fp: string): Component
