@@ -64,7 +64,7 @@ function init:load()
    local c = sk.sprite.newSprite("assets/ship1.png")
    g:addComponent(c)
    self:addBodyToObject(g, "dynamic")
-   self:addColliderToObject(g, love.physics.newCircleShape(1))
+   self:addColliderToObject(g, love.physics.newRectangleShape(20, 20))
    self:addGameObject(g)
    g.transform:scale(2, 2)
 
@@ -82,7 +82,7 @@ function init:load()
    g1.transform:scale(0.5, 0.5)
    g1.transform:translate(70, 70)
    self:addBodyToObject(g1, "dynamic")
-   self:addColliderToObject(g1, love.physics.newCircleShape(1))
+   self:addColliderToObject(g1, love.physics.newRectangleShape(20, 20))
    self:addGameObjectChild(g0, g1)
 
    return scene.cont
@@ -98,7 +98,13 @@ end
 function init:drawWorld()
    for _, b in ipairs(self.world:getBodies()) do
       local x, y = b:getPosition()
-      love.graphics.circle("fill", x, y, 10)
+      local s = b:getFixtures()[1]:getShape()
+      if s:getType() == "polygon" then
+
+         love.graphics.polygon("fill", b:getWorldPoints((s):getPoints()))
+      else
+         love.graphics.circle("fill", x, y, 10)
+      end
    end
 end
 

@@ -90,8 +90,12 @@ function SceneStack:update(dt: number)
               if c.update then c:update(dt) end
             end
             if g.body then
-              local x,y = g:getTransform():transformPoint(0,0)
+              local t = g:getTransform()
+              local x,y = t:transformPoint(0,0)
               g.body:setPosition(x,y)
+              local tx,ty = t:transformPoint(1,0)
+              --print(tx,ty,math.atan2(ty-y,tx-x))
+              g.body:setAngle(math.atan2(ty-y,tx-x))
             end
           end
         end

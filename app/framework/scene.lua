@@ -90,10 +90,12 @@ function SceneStack:update(dt)
                      if c.update then c:update(dt) end
                   end
                   if g.body then
-                     local x, y = g:getTransform():transformPoint(0, 0)
-
-
+                     local t = g:getTransform()
+                     local x, y = t:transformPoint(0, 0)
                      g.body:setPosition(x, y)
+                     local tx, ty = t:transformPoint(1, 0)
+
+                     g.body:setAngle(math.atan2(ty - y, tx - x))
                   end
                end
             end
@@ -160,6 +162,8 @@ local function beginContactCallback(s)
    return callback
 end
 
+
+
 function Scene.new()
    local s = {
       world = love.physics.newWorld(),
@@ -193,7 +197,6 @@ end
 
 function Scene:addBodyToObject(object, type)
    local x, y = object:getTransform():transformPoint(0, 0)
-
    print(x, y)
    object.body = love.physics.newBody(self.world, x, y, type)
 end
