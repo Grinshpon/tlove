@@ -89,6 +89,12 @@ function SceneStack:update(dt)
                   for _, c in ipairs(g.components) do
                      if c.update then c:update(dt) end
                   end
+                  if g.body then
+                     local x, y = g:getTransform():transformPoint(0, 0)
+
+
+                     g.body:setPosition(x, y)
+                  end
                end
             end
             table.sort(scene.gameObjects, gameObject.zCmp)
@@ -186,7 +192,9 @@ function Scene:addGameObjectChild(parent, child)
 end
 
 function Scene:addBodyToObject(object, type)
-   local x, y = object:getTransform():inverseTransformPoint(0, 0)
+   local x, y = object:getTransform():transformPoint(0, 0)
+
+   print(x, y)
    object.body = love.physics.newBody(self.world, x, y, type)
 end
 

@@ -63,9 +63,6 @@ function init:load(): SResult
   local g = sk.gameObject.GameObject.new("test")
   local c = sk.sprite.newSprite("assets/ship1.png")
   g:addComponent(c)
-  --g:addBody(sk.body.Body.new(self:world))
-  --g:addComponent(sk.body.Shape.new())
-  --or
   self:addBodyToObject(g,"dynamic")
   self:addColliderToObject(g,love.physics.newCircleShape(1) as love.physics.Shape)
   self:addGameObject(g)
@@ -74,7 +71,6 @@ function init:load(): SResult
   local c0 = sk.sprite.newSprite("assets/center.png")
   g0.z = 2
   g0:addComponent(c0)
-  g0.transform:rotate(math.pi/4)
   self:addGameObjectChild(g,g0)
 
   local c1 = sk.sprite.newSprite("assets/center.png")
@@ -83,25 +79,23 @@ function init:load(): SResult
     z = -1,
     components = {c1},
   }
-  self:addGameObjectChild(g0,g1)
   g1.transform:scale(0.5,0.5)
-  g1.transform:translate(70,0)
+  g1.transform:translate(70,70)
+  self:addBodyToObject(g1,"dynamic")
+  self:addColliderToObject(g1,love.physics.newCircleShape(1) as love.physics.Shape)
+  self:addGameObjectChild(g0,g1)
+  --g1:move(70,70)
   return scene.cont
 end
 
 
 function init:update(_dt: number): SResult
-  g0.transform:rotate(_dt)
+  --g0.transform:rotate(_dt)
+  g0:rotate(_dt)
   return scene.cont
 end
 
 function init:drawWorld()
-  --local s = Stack.init(1);
-  --local s1 = Stack.new() as Stack<number>;
-  --s:push(2)
-  --s1:push(30)
-  --love.graphics.print(tostring(s:pop()), 100,100)
-  --love.graphics.print(tostring(s1:pop()), 110,110)
   for _,b in ipairs(self.world:getBodies()) do
     local x,y = b:getPosition()
     love.graphics.circle("fill",x,y,10)

@@ -32,8 +32,10 @@ function mod.newSprite(fp)
          end
          t = self.gameObject.transform:clone()
          t:translate(-self.origin[1], -self.origin[2])
-         love.graphics.draw(self.spr, t)
-         while i > 0 do
+         love.graphics.push()
+         love.graphics.applyTransform(t)
+         love.graphics.draw(self.spr)
+         while i >= 0 do
             love.graphics.pop()
             i = i - 1
          end

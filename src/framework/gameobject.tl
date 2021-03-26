@@ -71,13 +71,30 @@ function GameObject:addBody(body: love.physics.Body)
 end
 
 function GameObject:getTransform(): Transform
-  local t = self.transform:clone()
+  local t = love.math.newTransform()--self.parent.transform:clone()--self.transform:clone()
   local p = self.parent
   while p do
     t:apply(p.transform)
     p = p.parent
   end
+  t:apply(self.transform)
   return t
+end
+
+function GameObject:move(dx: number, dy: number)
+  if self.body then
+    local x,y = self.body:getPosition()
+    self.body:setPosition(x+dx,y+dy)
+  end
+  self.transform:translate(dx,dy)
+end
+
+function GameObject:rotate(theta: number)
+  if self.body then
+    local angle = self.body:getAngle()
+    self.body:setAngle(angle+theta)
+  end
+  self.transform:rotate(theta)
 end
 
 --[[
