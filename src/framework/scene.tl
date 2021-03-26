@@ -4,7 +4,8 @@ local gameObject <const> = require "framework/gameobject"
 local GameObject <const> = gameObject.GameObject
 local Component <const> = gameObject.Component
 
-local Collider <const> = require("framework/components/collider").Collider
+local coll <const> = require("framework/components/collider")
+local Collider <const> = coll.Collider
 
 local Fixture <const> = love.physics.Fixture
 local Contact <const> = love.physics.Contact
@@ -90,16 +91,23 @@ function SceneStack:update(dt: number)
               if c.update then c:update(dt) end
             end
             if g.body then
-              local t = g:getTransform()
-              local x,y = t:transformPoint(0,0)
-              g.body:setPosition(x,y)
-              local tx,ty = t:transformPoint(1,0)
-              --print(tx,ty,math.atan2(ty-y,tx-x))
-              g.body:setAngle(math.atan2(ty-y,tx-x))
+              if not g.body:isActive() then --remove `not`
+                local t = g:getTransform()
+                local bx,by = t:inverseTransformPoint(g.body:getPosition())
+                g.transform:translate(bx,by)
+              else
+                local t = g:getTransform()
+                local x,y = t:transformPoint(0,0)
+                g.body:setPosition(x,y)
+                local tx,ty = t:transformPoint(1,0)
+                --print(tx,ty,math.atan2(ty-y,tx-x))
+                g.body:setAngle(math.atan2(ty-y,tx-x))
+              end
             end
           end
         end
         table.sort(scene.gameObjects, gameObject.zCmp)
+        scene.world:update(dt)
         res = scene:update(dt)
       end
     else
@@ -201,9 +209,9 @@ function Scene:addBodyToObject(object: GameObject, type: BodyType)
   object.body = love.physics.newBody(self.world,x,y,type)
 end
 
-function Scene:addColliderToObject(object: GameObject, shape: Shape)
+function Scene:addColliderToObject(object: GameObject, shape: Shape, beginContact: coll.Callback)
   local fixture = love.physics.newFixture(object.body,shape)
-  local collider = Collider.new(fixture)
+  local collider = Collider.new(fixture, beginContact)
   object:addComponent(collider as Component)
   self._f2c[fixture] = collider
 end

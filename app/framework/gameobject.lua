@@ -89,6 +89,13 @@ function GameObject:move(dx, dy)
    self.transform:translate(dx, dy)
 end
 
+function GameObject:moveGlobal(dx, dy)
+   local t = self:getTransform()
+   local x, y = t:transformPoint(0, 0)
+   dx, dy = t:inverseTransformPoint(x + dx, y + dy)
+   self.transform:translate(dx, dy)
+end
+
 function GameObject:rotate(theta)
    if self.body then
       local angle = self.body:getAngle()

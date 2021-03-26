@@ -4,6 +4,7 @@ local input = require("framework/input")
 
 local scene = require("framework/scene")
 local Stack = require("framework/stack")
+local collider = require("framework/components/collider")
 
 local sprite = require("framework/components/sprite")
 
@@ -49,6 +50,7 @@ local sk = {
 
    scene = scene,
    Stack = Stack,
+   collider = collider,
 
    sprite = sprite,
 

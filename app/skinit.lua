@@ -6,6 +6,8 @@ local scene = sk.scene
 
 local SResult = scene.SResult
 
+local coll = sk.collider
+
 
 local init = scene.Scene.new();
 
@@ -81,22 +83,37 @@ function init:load()
    })
    g1.transform:scale(0.5, 0.5)
    g1.transform:translate(70, 70)
-   self:addBodyToObject(g1, "dynamic")
-   self:addColliderToObject(g1, love.physics.newRectangleShape(20, 20))
+
+
    self:addGameObjectChild(g0, g1)
+
+
+   local g2 = sk.gameObject.GameObject.new({
+      id = "test 2",
+   })
+   g2:move(100, 20)
+   self:addGameObject(g2)
+   self:addBodyToObject(g2, "dynamic")
+   local function cb(other, contact)
+      print("begin contact")
+   end
+   self:addColliderToObject(g2, love.physics.newRectangleShape(20, 20), cb)
+
 
    return scene.cont
 end
 
 
-function init:update(_dt)
+function init:update(dt)
 
-   g0:rotate(_dt)
+   g0:moveGlobal(10 * dt, 0)
+
    return scene.cont
 end
 
 function init:drawWorld()
    for _, b in ipairs(self.world:getBodies()) do
+
       local x, y = b:getPosition()
       local s = b:getFixtures()[1]:getShape()
       if s:getType() == "polygon" then
@@ -109,6 +126,11 @@ function init:drawWorld()
 end
 
 function init:drawUI()
+   for i, g in ipairs(self.gameObjects) do
+      local t = g:getTransform()
+      local x, y = t:transformPoint(0, 0)
+      love.graphics.print(g.id .. ": " .. tostring(x) .. ", " .. tostring(y), 200, 20 * i)
+   end
 end
 
 function init:drawRaw()
