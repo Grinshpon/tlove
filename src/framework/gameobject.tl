@@ -79,6 +79,7 @@ function GameObject:addBody(body: love.physics.Body)
   self.body = body
 end
 
+--do not use, this is incorrect
 function GameObject:getTransform(): Transform
   --return self.transform
   --local t = love.math.newTransform()
@@ -108,7 +109,6 @@ function GameObject:move(dx: number, dy: number)
     self.body:setPosition(x,y)
   end
   self.dirty = true
-  --self.transform:translate(dx,dy)
 end
 
 function GameObject:moveLocal(dx: number, dy: number)
@@ -116,7 +116,6 @@ function GameObject:moveLocal(dx: number, dy: number)
   local x,y = t:transformPoint(0,0)
   dx,dy = t:inverseTransformPoint(x+dx,y+dy)
   self:move(dx,dy)
-  --self.transform:translate(dx,dy)
 end
 
 function GameObject:rotate(theta: number)
@@ -126,7 +125,6 @@ function GameObject:rotate(theta: number)
     self.body:setAngle(angle+theta)
   end
   self.dirty = true
-  --self.transform:rotate(theta)
 end
 
 function GameObject:updateTransform()

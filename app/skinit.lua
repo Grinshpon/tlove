@@ -137,8 +137,8 @@ end
 
 function init:drawUI()
    for i, g in ipairs(self.gameObjects) do
-
       local t = g:getGlobalTransform()
+
       local x, y = t:transformPoint(0, 0)
       love.graphics.print(g.id .. ": " .. tostring(x) .. ", " .. tostring(y), 200, 20 * i)
    end

@@ -79,6 +79,7 @@ function GameObject:addBody(body)
    self.body = body
 end
 
+
 function GameObject:getTransform()
 
 
@@ -108,7 +109,6 @@ function GameObject:move(dx, dy)
       self.body:setPosition(x, y)
    end
    self.dirty = true
-
 end
 
 function GameObject:moveLocal(dx, dy)
@@ -116,7 +116,6 @@ function GameObject:moveLocal(dx, dy)
    local x, y = t:transformPoint(0, 0)
    dx, dy = t:inverseTransformPoint(x + dx, y + dy)
    self:move(dx, dy)
-
 end
 
 function GameObject:rotate(theta)
@@ -126,7 +125,6 @@ function GameObject:rotate(theta)
       self.body:setAngle(angle + theta)
    end
    self.dirty = true
-
 end
 
 function GameObject:updateTransform()
