@@ -139,15 +139,15 @@ function init:drawUI()
    for i, g in ipairs(self.gameObjects) do
       local x, y = g:globalPos()
       love.graphics.print(g.id .. ": " .. tostring(x) .. ", " .. tostring(y), 200, 20 * i)
-      if g.body then
-         local t = g:getGlobalTransform()
-         local bx, by = g.body:getPosition()
-         print(x, y)
-         print(bx, by)
-         print(t:inverseTransformPoint(x, y))
-         print(t:inverseTransformPoint(bx, by))
-         print("--------------------")
-      end
+
+
+
+
+
+
+
+
+
 
    end
 end

@@ -95,11 +95,6 @@ function SceneStack:update(dt: number)
               if g.body:isActive() and not g.dirty then
                 local t = g:getTransform()
                 local bx,by = t:inverseTransformPoint(g.body:getPosition())
-                --print(bx,by)
-                --if bx ~= 0 or by ~= 0 then
-                --  g.pos[1], g.pos[2] = g.pos[1]+bx, g.pos[2]+by
-                --  g.dirty = true
-                --end
                 if bx ~= g.pos[1] or by ~= g.pos[2] then
                   g.pos[1], g.pos[2] = bx, by
                   g.dirty = true
@@ -115,9 +110,11 @@ function SceneStack:update(dt: number)
                   g.rot = brot
                   g.dirty = true
                 end
+                --brot = g.body:getAngle() + math.pi/2
                 --local rx,ry = t:inverseTransformPoint(math.cos(brot), math.sin(brot))
-                --print(g.rot, math.atan2(rx-bx,ry-by))
-                --g.rot = math.atan2(rx,ry)
+                ----print(g.rot, math.atan2(rx-bx,ry-by))
+                --g.rot = -math.atan2(rx,ry)
+                --g.dirty = true
               else
                 local t = g:getGlobalTransform()
                 local x,y = t:transformPoint(0,0)
