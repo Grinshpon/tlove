@@ -90,15 +90,34 @@ function SceneStack:update(dt: number)
             for _,c in ipairs(g.components) do
               if c.update then c:update(dt) end
             end
+            g:quietUpdateTransform()
             if g.body then
               if g.body:isActive() and not g.dirty then
-                local t = g:getGlobalTransform()
+                local t = g:getTransform()
                 local bx,by = t:inverseTransformPoint(g.body:getPosition())
                 --print(bx,by)
-                if bx ~= 0 or by ~= 0 then
-                  g.pos[1], g.pos[2] = g.pos[1]+bx, g.pos[2]+by
+                --if bx ~= 0 or by ~= 0 then
+                --  g.pos[1], g.pos[2] = g.pos[1]+bx, g.pos[2]+by
+                --  g.dirty = true
+                --end
+                if bx ~= g.pos[1] or by ~= g.pos[2] then
+                  g.pos[1], g.pos[2] = bx, by
                   g.dirty = true
                 end
+                local brot = g.body:getAngle()
+                local p = g.parent
+                while p do
+                  brot = brot - p.rot
+                  p = p.parent
+                end
+                --print(brot)
+                if brot ~= g.rot then
+                  g.rot = brot
+                  g.dirty = true
+                end
+                --local rx,ry = t:inverseTransformPoint(math.cos(brot), math.sin(brot))
+                --print(g.rot, math.atan2(rx-bx,ry-by))
+                --g.rot = math.atan2(rx,ry)
               else
                 local t = g:getGlobalTransform()
                 local x,y = t:transformPoint(0,0)

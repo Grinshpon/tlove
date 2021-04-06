@@ -67,7 +67,7 @@ function init:load(): SResult
   local c = sk.sprite.newSprite("assets/ship1.png")
   g:addComponent(c)
   self:addBodyToObject(g,"dynamic")
-  self:addColliderToObject(g,love.physics.newRectangleShape(20,20) as love.physics.Shape)
+  self:addColliderToObject(g,love.physics.newRectangleShape(30,30) as love.physics.Shape)
   self:addGameObject(g)
   g:scaleBy(2,2)
 
@@ -108,15 +108,15 @@ function init:load(): SResult
   local function cb(_other: coll.Collider, _contact: love.physics.Contact)
     print("begin contact")
   end
-  self:addColliderToObject(g2, love.physics.newRectangleShape(20,20) as love.physics.Shape, cb)
-  --g2.body:setLinearVelocity(-20,0)
+  self:addColliderToObject(g2, love.physics.newRectangleShape(30,30) as love.physics.Shape, cb)
+  g2.body:setLinearVelocity(-20,0)
 
   return scene.cont
 end
 
 
 function init:update(dt: number): SResult
-  g0:move(10*dt,0)
+  --g0:move(10*dt,0)
   g1:rotate(dt)
   return scene.cont
 end
@@ -139,7 +139,15 @@ function init:drawUI()
   for i,g in ipairs(self.gameObjects) do
     local x,y = g:globalPos()
     love.graphics.print(g.id..": "..tostring(x)..", "..tostring(y), 200,20*i)
-    --print(g:getGlobalTransform():inverseTransformPoint(x,y))
+    --if g.body then
+    --  local t = g:getGlobalTransform()
+    --  local bx,by = g.body:getPosition()
+    --  print(x,y)
+    --  print(bx,by)
+    --  print(t:inverseTransformPoint(x,y))
+    --  print(t:inverseTransformPoint(bx,by))
+    --  print("--------------------")
+    --end
     --if g.body then print(g.id, "|", x,y, "|", g.body:getPosition()) end
   end
 end

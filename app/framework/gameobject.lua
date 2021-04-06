@@ -80,26 +80,20 @@ function GameObject:addBody(body)
 end
 
 
-function GameObject:getTransform()
-   print("Do not use getTransform, it is incorrect. use getGlobalTransform instead")
-
-
-   local t = self.transform:clone()
-   local p = self.parent
-
-   while p do
-      t:apply(p.transform)
-      p = p.parent
-   end
-   return t
-end
-
 function GameObject:getGlobalTransform(t)
    if not t then t = love.math.newTransform() end
    if self.parent then
       t = self.parent:getGlobalTransform(t)
    end
    t:apply(self.transform)
+   return t
+end
+
+function GameObject:getTransform()
+   local t = love.math.newTransform()
+   if self.parent then
+      t = self.parent:getGlobalTransform(t)
+   end
    return t
 end
 
@@ -137,14 +131,22 @@ end
 function GameObject:updateTransform()
    if self.dirty then
       self.transform:setTransformation(self.pos[1], self.pos[2], self.rot, self.scale[1], self.scale[2])
+      for _, c in ipairs(self.children) do
+         c.dirty = true
+         c:updateTransform()
+      end
       self.dirty = false
    end
 end
 
-function GameObject:globalPos()
+function GameObject:quietUpdateTransform()
    if self.dirty then
       self.transform:setTransformation(self.pos[1], self.pos[2], self.rot, self.scale[1], self.scale[2])
    end
+end
+
+function GameObject:globalPos()
+   self:quietUpdateTransform()
    return self:getGlobalTransform():transformPoint(0, 0)
 end
 
