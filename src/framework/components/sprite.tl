@@ -13,6 +13,14 @@ local mod = {
   SpriteComp = SpriteComp
 }
 
+local function applyTransforms(g: GameObject)
+  if not g then return end
+  if g.parent then
+    applyTransforms(g.parent)
+  end
+  love.graphics.applyTransform(g.transform)
+end
+
 -- TODO: pull out draw logic into generic drawTexture function
 function mod.newSprite(fp: string): Component
   local sprite = {
@@ -20,25 +28,13 @@ function mod.newSprite(fp: string): Component
     spr = love.graphics.newImage(fp),
     origin = {0.0,0.0},
     drawWorld = function(self: SpriteComp)
-      local t = self.gameObject.transform
-      local p = self.gameObject.parent
-      local i: integer = 0
-      while p do
-        i = i+1
-        t = p.transform
-        love.graphics.push()
-        love.graphics.applyTransform(t)
-        p = p.parent
-      end
-      t = self.gameObject.transform:clone()
-      t:translate(-self.origin[1], -self.origin[2])
       love.graphics.push()
+      applyTransforms(self.gameObject.parent)
+      local t = self.gameObject.transform:clone()
+      t:translate(-self.origin[1], -self.origin[2])
       love.graphics.applyTransform(t)
       love.graphics.draw(self.spr as love.graphics.Drawable)--, t)
-      while i >= 0 do
-        love.graphics.pop()
-        i = i - 1
-      end
+      love.graphics.pop()
     end,
   }
   local ox,oy = (sprite.spr as love.graphics.Texture):getDimensions()

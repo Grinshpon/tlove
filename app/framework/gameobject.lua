@@ -53,6 +53,7 @@ function GameObject.new(o)
    else
       g = o
       g.pos = g.pos or alg.Vector2.new(0, 0)
+      g.rot = g.rot or 0
       g.scale = g.scale or 1
       g.z = g.z or 0
       g.transform = g.transform or love.math.newTransform()
@@ -185,9 +186,7 @@ end
 function Mod.zCmp(g1, g2)
    local z1 = g1:order()
    local z2 = g2:order()
-   if z1 < z2 then return true
-   else return false
-   end
+   return z1 < z2
 end
 
 return Mod
