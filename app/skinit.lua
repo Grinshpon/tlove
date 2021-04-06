@@ -86,7 +86,7 @@ function init:load()
 
 
    self:addGameObjectChild(g0, g1)
-
+   g1:move(70, 70)
 
    local g2 = sk.gameObject.GameObject.new({
       id = "test 2",
@@ -105,9 +105,8 @@ end
 
 
 function init:update(dt)
-
-   g0:moveGlobal(10 * dt, 0)
-
+   g0:move(10 * dt, 0)
+   g0:rotate(dt)
    return scene.cont
 end
 
@@ -127,7 +126,7 @@ end
 
 function init:drawUI()
    for i, g in ipairs(self.gameObjects) do
-      local t = g:getTransform()
+      local t = g:getGlobalTransform()
       local x, y = t:transformPoint(0, 0)
       love.graphics.print(g.id .. ": " .. tostring(x) .. ", " .. tostring(y), 200, 20 * i)
    end

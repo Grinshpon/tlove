@@ -1,17 +1,26 @@
 local record Mod
   record Vector3
     {number}
+    metamethod __index: function(Vector3i, integer | string): number
   end
   record Vector3i
     {integer}
+    metamethod __index: function(Vector3i, integer | string): integer
   end
-  record Transform -- a 3x3 matrix
+  record Vector2
     {number}
+    metamethod __index: function(Vector2, integer | string): number
+  end
+  record Vector2i
+    {integer}
+    metamethod __index: function(Vector2i, integer | string): integer
   end
 end
 local Vector3 = Mod.Vector3
 local Vector3i = Mod.Vector3i
-local Transform = Mod.Transform
+local Vector2i = Mod.Vector2i
+local Vector2 = Mod.Vector2
+--local Transform = Mod.Transform
 
 function Vec3IX(t: Vector3, key: integer | string): number
   if key is integer then
@@ -49,9 +58,45 @@ function Vector3i.new(x: integer, y: integer, z: integer): Vector3i
   return self
 end
 
+-- Vector2
+
+function Vec2IX(t: Vector2, key: integer | string): number
+  if key is integer then
+    return rawget(t,key)
+  else
+    if key == "x" then return rawget(t,1)
+    elseif key == "y" then return rawget(t,2)
+    else error("Invalid vector access")
+    end
+  end
+end
+
+function Vector2.new(x: number, y: number): Vector2
+  local s: Vector2 = {x,y}
+  local self = setmetatable(s, {__index=Vec3IX})
+  return self
+end
+
+function Vec2iIX(t: Vector2i, key: integer | string): integer
+  if key is integer then
+    return rawget(t,key)
+  else
+    if key == "x" then return rawget(t,1)
+    elseif key == "y" then return rawget(t,2)
+    else error("Invalid vector access")
+    end
+  end
+end
+
+function Vector2i.new(x: integer, y: integer): Vector2i
+  local s: Vector2i = {x,y}
+  local self = setmetatable(s, {__index=Vec2iIX})
+  return self
+end
+
 
 -- Transform
-
+--[[
 function Mod.tIx(row: integer, col: integer): integer
   return (row-1)*3+col
 end
@@ -128,6 +173,6 @@ function Transform:mulBy(b: Transform)
   res[8] = a[7]*b[2] + a[8]*b[5] + a[9]*b[8]
   res[9] = a[7]*b[3] + a[8]*b[6] + a[9]*b[9]
 end
-
+--]]
 
 return Mod

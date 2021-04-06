@@ -90,6 +90,7 @@ function SceneStack:update(dt)
                   for _, c in ipairs(g.components) do
                      if c.update then c:update(dt) end
                   end
+                  g:updateTransform()
                   if g.body then
                      if not g.body:isActive() then
                         local t = g:getTransform()

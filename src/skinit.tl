@@ -86,7 +86,7 @@ function init:load(): SResult
   --self:addBodyToObject(g1,"dynamic")
   --self:addColliderToObject(g1,love.physics.newRectangleShape(20,20) as love.physics.Shape)
   self:addGameObjectChild(g0,g1)
-  --g1:move(70,70)
+  g1:move(70,70)
 
   local g2 = sk.gameObject.GameObject.new {
     id = "test 2",
@@ -105,9 +105,8 @@ end
 
 
 function init:update(dt: number): SResult
-  --g0.transform:rotate(_dt)
-  g0:moveGlobal(10*dt,0)
-  --g0:rotate(dt)
+  g0:move(10*dt,0)
+  g0:rotate(dt)
   return scene.cont
 end
 
@@ -127,7 +126,7 @@ end
 
 function init:drawUI()
   for i,g in ipairs(self.gameObjects) do
-    local t = g:getTransform()
+    local t = g:getGlobalTransform()
     local x,y = t:transformPoint(0,0)
     love.graphics.print(g.id..": "..tostring(x)..", "..tostring(y), 200,20*i)
   end

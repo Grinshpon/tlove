@@ -1,8 +1,9 @@
-
+local alg = require("framework/alg")
 local Transform = love.math.Transform
 
 
 local Mod = {GameObject = {}, Component = {}, }
+
 
 
 
@@ -36,23 +37,30 @@ function GameObject.new(o)
    local g = nil
    if type(o) == "string" then
       g = {
-         transform = love.math.newTransform(),
+         pos = alg.Vector2.new(0, 0),
+         rot = 0,
+         scale = 1,
          z = 0,
+         transform = love.math.newTransform(),
          id = o,
          body = nil,
          parent = nil,
          children = {},
          components = {},
          enabled = true,
+         dirty = true,
       }
    else
       g = o
-      g.transform = g.transform or love.math.newTransform()
+      g.pos = g.pos or alg.Vector2.new(0, 0)
+      g.scale = g.scale or 1
       g.z = g.z or 0
+      g.transform = g.transform or love.math.newTransform()
       g.id = g.id or "game object"
       g.children = g.children or {}
       g.components = g.components or {}
       g.enabled = g.enabled or true
+      g.dirty = true
       for _, c in ipairs(g.components) do
          c.gameObject = g
       end
@@ -71,37 +79,65 @@ function GameObject:addBody(body)
 end
 
 function GameObject:getTransform()
-   local t = love.math.newTransform()
+
+
+   local t = self.transform:clone()
    local p = self.parent
+
    while p do
       t:apply(p.transform)
       p = p.parent
+   end
+   return t
+end
+
+function GameObject:getGlobalTransform(t)
+   if not t then t = love.math.newTransform() end
+   if self.parent then
+      t = self.parent:getGlobalTransform(t)
    end
    t:apply(self.transform)
    return t
 end
 
 function GameObject:move(dx, dy)
+   self.pos[1], self.pos[2] = self.pos[1] + dx, self.pos[2] + dy
    if self.body then
       local x, y = self.body:getPosition()
-      self.body:setPosition(x + dx, y + dy)
+      self.body:setPosition(x, y)
    end
-   self.transform:translate(dx, dy)
+   self.dirty = true
+
 end
 
-function GameObject:moveGlobal(dx, dy)
+function GameObject:moveLocal(dx, dy)
    local t = self:getTransform()
    local x, y = t:transformPoint(0, 0)
    dx, dy = t:inverseTransformPoint(x + dx, y + dy)
-   self.transform:translate(dx, dy)
+   self:move(dx, dy)
+
 end
 
 function GameObject:rotate(theta)
+   self.rot = self.rot + theta
    if self.body then
       local angle = self.body:getAngle()
       self.body:setAngle(angle + theta)
    end
-   self.transform:rotate(theta)
+   self.dirty = true
+
+end
+
+function GameObject:updateTransform()
+   if self.dirty then
+      self.transform:setTransformation(self.pos[1], self.pos[2], self.rot, self.scale, self.scale)
+      self.dirty = false
+   end
+end
+
+function GameObject:globalPos()
+   self:updateTransform()
+   return self:getTransform():transformPoint(0, 0)
 end
 
 
