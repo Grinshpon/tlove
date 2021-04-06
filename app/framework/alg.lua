@@ -73,9 +73,19 @@ end
 
 function Vector2.new(x, y)
    local s = { x, y }
-   local self = setmetatable(s, { __index = Vec3IX })
+   local self = setmetatable(s, { __index = Vec2IX })
    return self
 end
+
+
+
+
+
+
+
+
+
+
 
 function Vec2iIX(t, key)
    if math.type(key) == "integer" then

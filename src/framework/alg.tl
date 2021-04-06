@@ -73,9 +73,19 @@ end
 
 function Vector2.new(x: number, y: number): Vector2
   local s: Vector2 = {x,y}
-  local self = setmetatable(s, {__index=Vec3IX})
+  local self = setmetatable(s, {__index=Vec2IX})
   return self
 end
+
+--function Vector2:add(x: number, y: number | nil)
+--  if x is Vector2 then
+--    self[1] = self[1] + x[1]
+--    self[2] = self[2] + x[2]
+--  else
+--    self[1] = self[1] + x
+--    self[2] = self[2] + y
+--  end
+--end
 
 function Vec2iIX(t: Vector2i, key: integer | string): integer
   if key is integer then

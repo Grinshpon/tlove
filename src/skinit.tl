@@ -69,7 +69,7 @@ function init:load(): SResult
   self:addBodyToObject(g,"dynamic")
   self:addColliderToObject(g,love.physics.newRectangleShape(20,20) as love.physics.Shape)
   self:addGameObject(g)
-  g.transform:scale(2,2)
+  g:scaleBy(2,2)
 
   local c0 = sk.sprite.newSprite("assets/center.png")
   g0.z = 2
@@ -81,8 +81,8 @@ function init:load(): SResult
     id = "test 1",
     z = -1,
     components = {c1},
+    scale = sk.alg.Vector2.new(0.5,0.5),
   }
-  g1.transform:scale(0.5,0.5)
   --g1.transform:translate(70,70)
   --self:addBodyToObject(g1,"dynamic")
   --self:addColliderToObject(g1,love.physics.newRectangleShape(20,20) as love.physics.Shape)
@@ -105,7 +105,7 @@ function init:load(): SResult
   g2:move(100,20)
   self:addGameObject(g2)
   self:addBodyToObject(g2, "dynamic")
-  local function cb(other: coll.Collider, contact: love.physics.Contact)
+  local function cb(_other: coll.Collider, _contact: love.physics.Contact)
     print("begin contact")
   end
   self:addColliderToObject(g2, love.physics.newRectangleShape(20,20) as love.physics.Shape, cb)
@@ -137,10 +137,10 @@ end
 
 function init:drawUI()
   for i,g in ipairs(self.gameObjects) do
-    local t = g:getGlobalTransform()
-    --local t = g:getTransform()
-    local x,y = t:transformPoint(0,0)
+    local x,y = g:globalPos()
     love.graphics.print(g.id..": "..tostring(x)..", "..tostring(y), 200,20*i)
+    --print(g:getGlobalTransform():inverseTransformPoint(x,y))
+    --if g.body then print(g.id, "|", x,y, "|", g.body:getPosition()) end
   end
 end
 

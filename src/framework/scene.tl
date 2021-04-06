@@ -90,14 +90,17 @@ function SceneStack:update(dt: number)
             for _,c in ipairs(g.components) do
               if c.update then c:update(dt) end
             end
-            g:updateTransform()
             if g.body then
-              if not g.body:isActive() then --remove `not`
-                local t = g:getTransform()
+              if g.body:isActive() and not g.dirty then
+                local t = g:getGlobalTransform()
                 local bx,by = t:inverseTransformPoint(g.body:getPosition())
-                g.transform:translate(bx,by)
+                --print(bx,by)
+                if bx ~= 0 or by ~= 0 then
+                  g.pos[1], g.pos[2] = g.pos[1]+bx, g.pos[2]+by
+                  g.dirty = true
+                end
               else
-                local t = g:getTransform()
+                local t = g:getGlobalTransform()
                 local x,y = t:transformPoint(0,0)
                 g.body:setPosition(x,y)
                 local tx,ty = t:transformPoint(1,0)
@@ -105,6 +108,7 @@ function SceneStack:update(dt: number)
                 g.body:setAngle(math.atan2(ty-y,tx-x))
               end
             end
+            g:updateTransform()
           end
         end
         table.sort(scene.gameObjects, gameObject.zCmp)
@@ -205,9 +209,11 @@ function Scene:addGameObjectChild(parent: GameObject, child: GameObject)
 end
 
 function Scene:addBodyToObject(object: GameObject, type: BodyType)
-  local x,y = object:getTransform():transformPoint(0,0)
+  object:updateTransform()
+  local x,y = object:getGlobalTransform():transformPoint(0,0)
   print(x,y)
   object.body = love.physics.newBody(self.world,x,y,type)
+  print(object.body:getPosition())
 end
 
 function Scene:addColliderToObject(object: GameObject, shape: Shape, beginContact: coll.Callback)

@@ -39,7 +39,7 @@ function GameObject.new(o)
       g = {
          pos = alg.Vector2.new(0, 0),
          rot = 0,
-         scale = 1,
+         scale = alg.Vector2.new(1, 1),
          z = 0,
          transform = love.math.newTransform(),
          id = o,
@@ -54,9 +54,9 @@ function GameObject.new(o)
       g = o
       g.pos = g.pos or alg.Vector2.new(0, 0)
       g.rot = g.rot or 0
-      g.scale = g.scale or 1
+      g.scale = g.scale or alg.Vector2.new(1, 1)
       g.z = g.z or 0
-      g.transform = g.transform or love.math.newTransform()
+      g.transform = love.math.newTransform(g.pos[1], g.pos[2], g.rot, g.scale[1], g.scale[2])
       g.id = g.id or "game object"
       g.children = g.children or {}
       g.components = g.components or {}
@@ -81,6 +81,7 @@ end
 
 
 function GameObject:getTransform()
+   print("Do not use getTransform, it is incorrect. use getGlobalTransform instead")
 
 
    local t = self.transform:clone()
@@ -104,10 +105,10 @@ end
 
 function GameObject:move(dx, dy)
    self.pos[1], self.pos[2] = self.pos[1] + dx, self.pos[2] + dy
-   if self.body then
-      local x, y = self.body:getPosition()
-      self.body:setPosition(x, y)
-   end
+
+
+
+
    self.dirty = true
 end
 
@@ -120,23 +121,31 @@ end
 
 function GameObject:rotate(theta)
    self.rot = self.rot + theta
-   if self.body then
-      local angle = self.body:getAngle()
-      self.body:setAngle(angle + theta)
-   end
+
+
+
+
+   self.dirty = true
+end
+
+function GameObject:scaleBy(sx, sy)
+   self.scale[1] = self.scale[1] * sx
+   self.scale[2] = self.scale[2] * sy
    self.dirty = true
 end
 
 function GameObject:updateTransform()
    if self.dirty then
-      self.transform:setTransformation(self.pos[1], self.pos[2], self.rot, self.scale, self.scale)
+      self.transform:setTransformation(self.pos[1], self.pos[2], self.rot, self.scale[1], self.scale[2])
       self.dirty = false
    end
 end
 
 function GameObject:globalPos()
-   self:updateTransform()
-   return self:getTransform():transformPoint(0, 0)
+   if self.dirty then
+      self.transform:setTransformation(self.pos[1], self.pos[2], self.rot, self.scale[1], self.scale[2])
+   end
+   return self:getGlobalTransform():transformPoint(0, 0)
 end
 
 

@@ -1,3 +1,4 @@
+local alg = require("framework/alg")
 local config = require("framework/config")
 local gameObject = require("framework/gameobject")
 local input = require("framework/input")
@@ -44,6 +45,7 @@ local sprite = require("framework/components/sprite")
 
 
 local sk = {
+   alg = alg,
    config = config,
    gameObject = gameObject,
    input = input,
