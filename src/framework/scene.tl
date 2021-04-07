@@ -227,9 +227,9 @@ end
 function Scene:addBodyToObject(object: GameObject, type: BodyType)
   object:updateTransform()
   local x,y = object:getGlobalTransform():transformPoint(0,0)
-  print(x,y)
+  --print(x,y)
   object.body = love.physics.newBody(self.world,x,y,type)
-  print(object.body:getPosition())
+  --print(object.body:getPosition())
 end
 
 function Scene:addColliderToObject(object: GameObject, shape: Shape, beginContact: coll.Callback)

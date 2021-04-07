@@ -107,7 +107,7 @@ function GameObject:move(dx: number, dy: number)
 end
 
 function GameObject:moveLocal(dx: number, dy: number)
-  local t = self:getTransform()
+  local t = self:getGlobalTransform()
   local x,y = t:transformPoint(0,0)
   dx,dy = t:inverseTransformPoint(x+dx,y+dy)
   self:move(dx,dy)

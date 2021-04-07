@@ -107,14 +107,14 @@ function SceneStack:update(dt)
                         end
 
                         if brot ~= g.rot then
-
+                           g.rot = brot
                            g.dirty = true
                         end
-                        brot = g.body:getAngle() + math.pi / 2
-                        local rx, ry = t:inverseTransformPoint(math.cos(brot), math.sin(brot))
 
-                        g.rot = -math.atan2(rx, ry)
-                        g.dirty = true
+
+
+
+
                      else
                         local t = g:getGlobalTransform()
                         local x, y = t:transformPoint(0, 0)
@@ -227,9 +227,9 @@ end
 function Scene:addBodyToObject(object, type)
    object:updateTransform()
    local x, y = object:getGlobalTransform():transformPoint(0, 0)
-   print(x, y)
+
    object.body = love.physics.newBody(self.world, x, y, type)
-   print(object.body:getPosition())
+
 end
 
 function Scene:addColliderToObject(object, shape, beginContact)
