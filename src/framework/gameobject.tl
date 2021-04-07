@@ -99,10 +99,12 @@ end
 
 function GameObject:move(dx: number, dy: number)
   self.pos[1], self.pos[2] = self.pos[1]+dx, self.pos[2]+dy
-  --if self.body then
-  --  local x,y = self.body:getPosition()
-  --  self.body:setPosition(x,y)
-  --end
+  self.dirty = true
+end
+
+function GameObject:setPos(x: number, y: number)
+  self.pos[1] = x
+  self.pos[2] = y
   self.dirty = true
 end
 
@@ -115,10 +117,6 @@ end
 
 function GameObject:rotate(theta: number)
   self.rot = self.rot + theta
-  --if self.body then
-  --  local angle = self.body:getAngle()
-  --  self.body:setAngle(angle+theta)
-  --end
   self.dirty = true
 end
 
